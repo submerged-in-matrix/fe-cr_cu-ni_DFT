@@ -1,0 +1,40 @@
+# Ignore all DAT files
+*.DAT
+*.dat
+
+
+# Ignore temporary files
+*.tmp
+*.backup
+*.bak
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore large DFT output files (optional)
+*.chk
+*.cube
+*.wfn
+*.wfx
+*.xml
+
+# Ignore temporary directories
+tmp/
+temp/
+
+# Ignore VASP related large files
+CHG
+CHGCAR
+WAVECAR
+XDATCAR
+DOSCAR
+EIGENVAL
+PCDAT
+IBZKPT
+
+# Ignore Quantum ESPRESSO temp files
+*.save/
+*.wfc*
+*.paw*

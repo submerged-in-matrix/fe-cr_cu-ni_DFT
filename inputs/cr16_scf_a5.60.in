@@ -1,0 +1,48 @@
+&CONTROL
+    calculation = 'scf',
+    prefix = 'cr16_a5.60',
+    pseudo_dir = './pseudo/',
+    outdir = './tmp/',
+    tstress = .true.
+/
+&SYSTEM
+    ibrav = 0,
+    nat = 16,
+    ntyp = 1,
+    ecutwfc = 45.0,
+    ecutrho = 360.0,
+    occupations = 'smearing',
+    smearing = 'mv',
+    degauss = 0.02,
+    nspin = 2,
+    starting_magnetization(1) = 0.3
+/
+&ELECTRONS
+    conv_thr = 1.0d-6,
+    mixing_beta = 0.3
+/
+ATOMIC_SPECIES
+Cr 51.996 Cr.pbe-spn-kjpaw_psl.1.0.0.UPF
+CELL_PARAMETERS angstrom
+5.60  0.000000  0.000000
+0.000000  5.60  0.000000
+0.000000  0.000000  5.60
+ATOMIC_POSITIONS crystal
+Cr 0.0000 0.0000 0.0000
+Cr 0.2500 0.2500 0.2500
+Cr 0.0000 0.0000 0.5000
+Cr 0.2500 0.2500 0.7500
+Cr 0.0000 0.5000 0.0000
+Cr 0.2500 0.7500 0.2500
+Cr 0.0000 0.5000 0.5000
+Cr 0.2500 0.7500 0.7500
+Cr 0.5000 0.0000 0.0000
+Cr 0.7500 0.2500 0.2500
+Cr 0.5000 0.0000 0.5000
+Cr 0.7500 0.2500 0.7500
+Cr 0.5000 0.5000 0.0000
+Cr 0.7500 0.7500 0.2500
+Cr 0.5000 0.5000 0.5000
+Cr 0.7500 0.7500 0.7500
+K_POINTS automatic
+4 4 4 0 0 0
