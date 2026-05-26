@@ -6,6 +6,18 @@ for use as FEM material inputs across arbitrary compositions.
 
 ---
 
+## Project Status
+
+| Stage | System | Status |
+|---|---|---|
+| DFT — elastic constant sweep | Fe-Cr (BCC, 16-atom SQS) | ✅ Complete — 17/17 tags |
+| DFT — elastic constant sweep | Cu-Ni (FCC, 32-atom SQS) | ⏳ Pending |
+| Post-processing — extraction | Fe-Cr | ✅ Complete |
+| ML surrogate | Fe-Cr | 🔄 Next |
+| FEM/MD integration | — | ⏳ Pending |
+
+---
+
 ## Repository Structure
 
 ```
@@ -44,6 +56,54 @@ fe-cr_cu-ni_DFT/
     ├── session_summary_may25_2026.md
     └── session_handoff_may23.md
 ```
+
+---
+
+## Physical Background
+
+### Why elastic constants matter
+The elastic tensor fully characterises the linear mechanical response of a
+crystal. For cubic symmetry (BCC Fe-Cr, FCC Cu-Ni) only three independent
+constants exist: C₁₁ (resistance to uniaxial strain), C₁₂ (transverse
+response to uniaxial strain), and C₄₄ (resistance to shear). These feed
+directly into FEM simulations as material inputs and into MD potentials as
+validation targets.
+
+### Why DFT and not experiment
+Elastic constants for arbitrary binary alloy compositions are not tabulated
+experimentally. DFT with the stress-strain method allows systematic
+computation across the full composition range at a fraction of the cost of
+growing and testing alloy samples for each composition.
+
+### Special Quasirandom Structures (SQS)
+A binary alloy at composition x is not a perfect crystal — atoms occupy sites
+randomly. An SQS supercell mimics this disorder by constructing a small
+periodic cell whose correlation functions best match those of a truly random
+alloy. Here we use 16-atom BCC SQS cells for Fe-Cr and 32-atom FCC cells for
+Cu-Ni, generated prior to this work. Each SQS cell represents one composition
+(one "tag") in the sweep.
+
+### Magnetism in Fe-Cr and why it complicated the calculations
+BCC Fe is ferromagnetic. BCC Cr is the only elemental metal that is
+antiferromagnetic at room temperature (Néel temperature ~311 K, spin-density
+wave ground state). In Fe-Cr alloys the magnetic ground state transitions from
+ferromagnetic at Fe-rich compositions toward antiferromagnetic at Cr-rich
+compositions. The exact transition composition in a disordered SQS cell is not
+known a priori.
+
+For compositions up to ~81% Cr (13 Cr atoms out of 16) the SCF converged
+cleanly with ferromagnetic initialisation. For the three highest-Cr tags
+(14–16 Cr atoms, 87.5–100% Cr) the SCF stalled — the system was trapped
+between competing spin configurations. The diagnostic signature was:
+total magnetisation frozen at 3.16 µB (a QE two-Fermi-level artefact of
+ferromagnetic initialisation) while absolute magnetisation oscillated 5–8 µB
+for 300 iterations, indicating the spin texture was never stabilised.
+
+The fix was AFM sublattice initialisation: Cr atoms were split into two
+species (CrA, CrB) by BCC sublattice parity, with opposite starting
+magnetisations (+0.5, −0.5). This provides a physically appropriate starting
+point for Cr-rich BCC and allowed all three tags to converge in ~50 iterations.
+See `notebooks/fe02cr14_convergence_study.ipynb` for the full diagnostic.
 
 ---
 
@@ -87,18 +147,17 @@ All stresses in kbar → divide by 10 for GPa.
 | Tags | conv_thr | Magnetic init | Notes |
 |---|---|---|---|
 | fe16cr00 → fe06cr10 | 1e-8 | FM | Clean convergence |
-| fe04cr12 → fe03cr13 | 1e-7 | FM | Clean convergence |
+| fe06cr10 → fe03cr13 | 1e-7 | FM | Clean convergence |
 | fe02cr14 → fe00cr16 | 1e-5 | AFM (CrA/CrB sublattice) | Near AFM phase boundary |
 
 ### High-Cr tags — ML flags
 
-three high-Cr tags must be treated with care in the ML surrogate:
+The three high-Cr tags must be treated with care in the ML surrogate:
 
-- `afm_init = True` — AFM sublattice initialisation used
-- `conv_thr = 1e-5` — fe02cr14 h_0.0 onwards - looser threshold due to magnetic frustration and budget
+- `afm_init = True` — AFM sublattice initialisation used for all strain calcs
+- `conv_thr = 1e-5` — looser threshold due to magnetic frustration and budget
 
-
-The FM→AFM transition near 85% Cr may represent a genuine physical discontinuity in elastic response.
+*the FM→AFM transition near 85% Cr may represent a genuine physical discontinuity in elastic response.*
 
 ### fe02cr14 convergence study
 
@@ -136,9 +195,10 @@ nohup bash scripts/run_elastic_grid.sh > elastic_grid.log 2>&1 &
 
 ## Next Steps
 
-1. ML surrogate — Gaussian Process or Random Forest on C₁₁/C₁₂/C₄₄ vs x_Cr
-2. FEM/MD — use ML-predicted elastic constants as material inputs
-3. Cu-Ni DFT sweep (32-atom FCC SQS, 17 compositions)
+1. Cu-Ni DFT sweep (32-atom FCC SQS, 17 compositions)
+2. ML surrogate — Gaussian Process or Random Forest on C₁₁/C₁₂/C₄₄ vs x_Cr
+3. FEM/MD — use ML-predicted elastic constants as material inputs
+
 ---
 
 ## References
