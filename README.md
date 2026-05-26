@@ -6,18 +6,6 @@ for use as FEM material inputs across arbitrary compositions.
 
 ---
 
-## Project Status
-
-| Stage | System | Status |
-|---|---|---|
-| DFT — elastic constant sweep | Fe-Cr (BCC, 16-atom SQS) | ✅ Complete — 17/17 tags |
-| DFT — elastic constant sweep | Cu-Ni (FCC, 32-atom SQS) | ⏳ Pending |
-| Post-processing — extraction | Fe-Cr | ✅ Complete |
-| ML surrogate | Fe-Cr | 🔄 Next |
-| FEM/MD integration | — | ⏳ Pending |
-
----
-
 ## Repository Structure
 
 ```
@@ -98,22 +86,19 @@ All stresses in kbar → divide by 10 for GPa.
 
 | Tags | conv_thr | Magnetic init | Notes |
 |---|---|---|---|
-| fe16cr00 → fe05cr11 | 1e-8 → 1e-7 | FM | Clean convergence |
+| fe16cr00 → fe06cr10 | 1e-8 | FM | Clean convergence |
 | fe04cr12 → fe03cr13 | 1e-7 | FM | Clean convergence |
-| fe02cr14, fe01cr15, fe00cr16 | 1e-5 | AFM (CrA/CrB sublattice) | Near AFM phase boundary |
+| fe02cr14 → fe00cr16 | 1e-5 | AFM (CrA/CrB sublattice) | Near AFM phase boundary |
 
 ### High-Cr tags — ML flags
 
-The three high-Cr tags must be treated with care in the ML surrogate:
+three high-Cr tags must be treated with care in the ML surrogate:
 
 - `afm_init = True` — AFM sublattice initialisation used
-- `conv_thr = 1e-5` — looser threshold due to magnetic frustration and budget
-- `mixed_magnetic_setup = True` — hydrostatic strain points used FM+plain,
-  tetra/shear used AFM+local-TF (pre-AFM fix outputs reused)
+- `conv_thr = 1e-5` — fe02cr14 h_0.0 onwards - looser threshold due to magnetic frustration and budget
 
-**Recommendation:** include with down-weighted samples. Do not extrapolate
-from lower-Cr tags only — the FM→AFM transition near 85% Cr may represent
-a genuine physical discontinuity in elastic response.
+
+The FM→AFM transition near 85% Cr may represent a genuine physical discontinuity in elastic response.
 
 ### fe02cr14 convergence study
 
@@ -151,10 +136,9 @@ nohup bash scripts/run_elastic_grid.sh > elastic_grid.log 2>&1 &
 
 ## Next Steps
 
-1. Cu-Ni DFT sweep (32-atom FCC SQS, 17 compositions)
-2. ML surrogate — Gaussian Process or Random Forest on C₁₁/C₁₂/C₄₄ vs x_Cr
-3. FEM/MD — use ML-predicted elastic constants as material inputs
-
+1. ML surrogate — Gaussian Process or Random Forest on C₁₁/C₁₂/C₄₄ vs x_Cr
+2. FEM/MD — use ML-predicted elastic constants as material inputs
+3. Cu-Ni DFT sweep (32-atom FCC SQS, 17 compositions)
 ---
 
 ## References
