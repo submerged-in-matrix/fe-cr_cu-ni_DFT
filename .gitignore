@@ -1,40 +1,32 @@
-# Ignore all DAT files
-*.DAT
-*.dat
+# ── QE scratch and runtime files ─────────────────────────────────────────────
+tmp/
+*.save/
+*.wfc*
+*.wfc
+*.hub
+*.occup
+*.igk*
+*.xml
+crash
+nohup.out
+
+# ── Generated input files (reproducible from scripts) ────────────────────────
+inputs/
+
+# ── Pseudopotentials (third-party, not ours) ─────────────────────────────────
+pseudo/
 
 
-# Ignore temporary files
-*.tmp
-*.backup
-*.bak
-
-# Ignore Python cache
+# ── Python artifacts ──────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
 *.pyo
+.ipynb_checkpoints/
 
-# Ignore large DFT output files (optional)
-*.chk
-*.cube
-*.wfn
-*.wfx
-*.xml
-
-# Ignore temporary directories
-tmp/
-temp/
-
-# Ignore VASP related large files
-CHG
-CHGCAR
-WAVECAR
-XDATCAR
-DOSCAR
-EIGENVAL
-PCDAT
-IBZKPT
-
-# Ignore Quantum ESPRESSO temp files
-*.save/
-*.wfc*
-*.paw*
+# ── OS and editor noise ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+*.Zone.Identifier

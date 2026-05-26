@@ -1,0 +1,15 @@
+SCF iterations (1e-5): 52
+SCF iterations (1e-7): 62
+
+Note:
+  h0.00 is the equilibrium (zero-strain) point, not used in elastic
+  constant extraction. Only h+/-0.01 enter the finite difference for C11+2C12.
+  This comparison quantifies convergence quality only — not elastic constant error.
+
+Verdict:
+  thr7 residual P = -0.96 kbar (closer to ideal P=0)
+  thr5 residual P = -3.25 kbar (ΔP = 2.29 kbar from thr7)
+  fe02cr14, fe01cr15, fe00cr16 flagged as uncertain in elastic constant dataset.
+  Down-weight in ML surrogate. Do not exclude without further thr7 strain-point runs.
+  ΔP < 0.5 GPa → conv_thr=1e-5 acceptable for high-Cr tags.
+  Down-weight in ML but do not exclude.

@@ -1,0 +1,152 @@
+nohup: ignoring input
+══════════════════════════════════════════════════════
+  Elastic Constants: Fe-Cr AFM restart
+  Tags: fe02cr14, fe01cr15, fe00cr16
+  QE binary : /root/q-e-qe-7.3.1/bin/pw.x
+  Project   : /root/fe-cr_cu-ni_DFT
+  OMP_NUM_THREADS=8
+  conv_thr  : 1.0d-5 (loosened for AFM boundary)
+  Started   : Sun May 24 09:26:19 UTC 2026
+══════════════════════════════════════════════════════
+
+╔══════════════════════════════════════════════════════╗
+║  Fe-Cr AFM restart: fe02cr14, fe01cr15, fe00cr16   ║
+╚══════════════════════════════════════════════════════╝
+
+── Fe2Cr14 (x=.8750) [AFM] ──────────────────
+  [fecr_fe02cr14] vc-relax...
+    SKIP (bfgs done): outputs/fecr_fe02cr14_vcr.out
+    [1/30]
+  [fecr_fe02cr14] SA_EQ=5.692293919 Å, E=-4133.52802918 Ry, μ=3.39 μB
+  [fecr_fe02cr14] Hydrostatic...
+    SKIP (scf converged): outputs/fecr_fe02cr14_h-0.01.out
+    hydro ε=-0.01: P=67.05 kbar
+    [2/30]
+    >> RUNNING: fecr_fe02cr14_h0.00.in  →  fecr_fe02cr14_h0.00.out  [09:26:19]
+    hydro ε=0.00: P=-3.25 kbar
+    [3/30] ~216 min remaining
+    SKIP (scf converged): outputs/fecr_fe02cr14_h0.01.out
+    hydro ε=0.01: P=-85.32 kbar
+    [4/30] ~156 min remaining
+  [fecr_fe02cr14] hydro.dat written (3/3 valid)
+  [fecr_fe02cr14] Tetragonal...
+    >> RUNNING: fecr_fe02cr14_t-0.01.in  →  fecr_fe02cr14_t-0.01.out  [09:51:18]
+    tetra ε=-0.01: S11=-17.70 S33=28.43 DS=46.1300 kbar
+    [5/30] ~295 min remaining
+    >> RUNNING: fecr_fe02cr14_t0.00.in  →  fecr_fe02cr14_t0.00.out  [10:25:31]
+    tetra ε=0.00: S11=0.53 S33=0.53 DS=0.0000 kbar
+    [6/30] ~336 min remaining
+    >> RUNNING: fecr_fe02cr14_t0.01.in  →  fecr_fe02cr14_t0.01.out  [10:50:33]
+    tetra ε=0.01: S11=17.11 S33=-27.49 DS=-44.6000 kbar
+    [7/30] ~525 min remaining
+  [fecr_fe02cr14] tetra.dat written (3/3 valid)
+  [fecr_fe02cr14] Shear...
+    >> RUNNING: fecr_fe02cr14_s-0.01.in  →  fecr_fe02cr14_s-0.01.out  [12:06:33]
+    shear ε=-0.01: S12=21.37 kbar
+    [8/30] ~591 min remaining
+    >> RUNNING: fecr_fe02cr14_s0.00.in  →  fecr_fe02cr14_s0.00.out  [13:01:29]
+    shear ε=0.00: S12=0.05 kbar
+    [9/30] ~560 min remaining
+    >> RUNNING: fecr_fe02cr14_s0.01.in  →  fecr_fe02cr14_s0.01.out  [13:26:32]
+    shear ε=0.01: S12=-21.33 kbar
+    [10/30] ~562 min remaining
+  [fecr_fe02cr14] shear.dat written (3/3 valid)
+  [fecr_fe02cr14] ✓ Complete
+
+── Fe1Cr15 (x=.9375) [AFM] ──────────────────
+  [fecr_fe01cr15] vc-relax...
+    >> RUNNING: fecr_fe01cr15_vcr.in  →  fecr_fe01cr15_vcr.out  [14:07:53]
+    [11/30] ~637 min remaining
+  [fecr_fe01cr15] SA_EQ=5.710299279 Å, E=-4052.51614402 Ry, μ=1.43 μB
+  [fecr_fe01cr15] Hydrostatic...
+    >> RUNNING: fecr_fe01cr15_h-0.01.in  →  fecr_fe01cr15_h-0.01.out  [15:36:16]
+    hydro ε=-0.01: P=66.90 kbar
+    [12/30] ~579 min remaining
+    >> RUNNING: fecr_fe01cr15_h0.00.in  →  fecr_fe01cr15_h0.00.out  [15:53:08]
+    hydro ε=0.00: P=-1.87 kbar
+    [13/30] ~529 min remaining
+    >> RUNNING: fecr_fe01cr15_h0.01.in  →  fecr_fe01cr15_h0.01.out  [16:12:12]
+    hydro ε=0.01: P=-50.29 kbar
+    [14/30] ~482 min remaining
+  [fecr_fe01cr15] hydro.dat written (3/3 valid)
+  [fecr_fe01cr15] Tetragonal...
+    >> RUNNING: fecr_fe01cr15_t-0.01.in  →  fecr_fe01cr15_t-0.01.out  [16:28:39]
+    tetra ε=-0.01: S11=-17.16 S33=35.72 DS=52.8800 kbar
+    [15/30] ~452 min remaining
+    >> RUNNING: fecr_fe01cr15_t0.00.in  →  fecr_fe01cr15_t0.00.out  [16:58:31]
+    tetra ε=0.00: S11=-0.09 S33=-0.09 DS=0.0000 kbar
+    [16/30] ~411 min remaining
+    >> RUNNING: fecr_fe01cr15_t0.01.in  →  fecr_fe01cr15_t0.01.out  [17:16:28]
+    tetra ε=0.01: S11=16.98 S33=-33.76 DS=-50.7400 kbar
+    [17/30] ~394 min remaining
+  [fecr_fe01cr15] tetra.dat written (3/3 valid)
+  [fecr_fe01cr15] Shear...
+    >> RUNNING: fecr_fe01cr15_s-0.01.in  →  fecr_fe01cr15_s-0.01.out  [18:03:12]
+    shear ε=-0.01: S12=20.12 kbar
+    [18/30] ~368 min remaining
+    >> RUNNING: fecr_fe01cr15_s0.00.in  →  fecr_fe01cr15_s0.00.out  [18:40:00]
+    shear ε=0.00: S12=0.00 kbar
+    [19/30] ~330 min remaining
+    >> RUNNING: fecr_fe01cr15_s0.01.in  →  fecr_fe01cr15_s0.01.out  [18:57:56]
+    shear ε=0.01: S12=-20.15 kbar
+    [20/30] ~306 min remaining
+  [fecr_fe01cr15] shear.dat written (3/3 valid)
+  [fecr_fe01cr15] ✓ Complete
+
+── Fe0Cr16 (x=1.0000) [AFM] ──────────────────
+  [fecr_fe00cr16] vc-relax...
+    >> RUNNING: fecr_fe00cr16_vcr.in  →  fecr_fe00cr16_vcr.out  [19:39:23]
+    [21/30] ~297 min remaining
+  [fecr_fe00cr16] SA_EQ=5.717525601 Å, E=-3971.50870744 Ry, μ=-0.00 μB
+  [fecr_fe00cr16] Hydrostatic...
+    >> RUNNING: fecr_fe00cr16_h-0.01.in  →  fecr_fe00cr16_h-0.01.out  [20:59:50]
+    hydro ε=-0.01: P=65.57 kbar
+    [22/30] ~260 min remaining
+    >> RUNNING: fecr_fe00cr16_h0.00.in  →  fecr_fe00cr16_h0.00.out  [21:21:51]
+    hydro ε=0.00: P=2.84 kbar
+    [23/30] ~225 min remaining
+    >> RUNNING: fecr_fe00cr16_h0.01.in  →  fecr_fe00cr16_h0.01.out  [21:47:51]
+    hydro ε=0.01: P=-51.43 kbar
+    [24/30] ~189 min remaining
+  [fecr_fe00cr16] hydro.dat written (3/3 valid)
+  [fecr_fe00cr16] Tetragonal...
+    >> RUNNING: fecr_fe00cr16_t-0.01.in  →  fecr_fe00cr16_t-0.01.out  [22:06:01]
+    tetra ε=-0.01: S11=-21.69 S33=35.91 DS=57.6000 kbar
+    [25/30] ~157 min remaining
+    >> RUNNING: fecr_fe00cr16_t0.00.in  →  fecr_fe00cr16_t0.00.out  [22:32:49]
+    tetra ε=0.00: S11=1.12 S33=1.12 DS=0.0000 kbar
+    [26/30] ~123 min remaining
+    >> RUNNING: fecr_fe00cr16_t0.01.in  →  fecr_fe00cr16_t0.01.out  [22:52:07]
+    tetra ε=0.01: S11=18.33 S33=-37.86 DS=-56.1900 kbar
+    [27/30] ~90 min remaining
+  [fecr_fe00cr16] tetra.dat written (3/3 valid)
+  [fecr_fe00cr16] Shear...
+    >> RUNNING: fecr_fe00cr16_s-0.01.in  →  fecr_fe00cr16_s-0.01.out  [23:04:56]
+    shear ε=-0.01: S12=20.08 kbar
+    [28/30] ~59 min remaining
+    >> RUNNING: fecr_fe00cr16_s0.00.in  →  fecr_fe00cr16_s0.00.out  [23:22:10]
+    shear ε=0.00: S12=0.00 kbar
+    [29/30] ~29 min remaining
+    >> RUNNING: fecr_fe00cr16_s0.01.in  →  fecr_fe00cr16_s0.01.out  [23:41:30]
+    shear ε=0.01: S12=-20.13 kbar
+    [30/30] ~0 min remaining
+  [fecr_fe00cr16] shear.dat written (3/3 valid)
+  [fecr_fe00cr16] ✓ Complete
+
+══════════════════════════════════════════════════════
+  AFM SWEEP DONE — 874 min total
+  Finished: Mon May 25 00:00:31 UTC 2026
+══════════════════════════════════════════════════════
+  .dat files written:
+    dft_data/fecr_fe02cr14_hydro.dat
+    dft_data/fecr_fe02cr14_shear.dat
+    dft_data/fecr_fe02cr14_tetra.dat
+    dft_data/fecr_fe01cr15_hydro.dat
+    dft_data/fecr_fe01cr15_shear.dat
+    dft_data/fecr_fe01cr15_tetra.dat
+    dft_data/fecr_fe00cr16_hydro.dat
+    dft_data/fecr_fe00cr16_shear.dat
+    dft_data/fecr_fe00cr16_tetra.dat
+
+  Tags with NaN in .dat (need manual stress extraction):
+══════════════════════════════════════════════════════

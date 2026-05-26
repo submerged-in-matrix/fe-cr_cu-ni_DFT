@@ -1,0 +1,37 @@
+fe02cr14 Convergence Study
+============================================================
+
+DIAGNOSTIC FILES ONLY. Not in ML training set.
+
+                 file   mixing   beta conv_thr converged  iters best_acc abs_mag_range           P_kbar
+      h+0.01 FM-plain    plain 0.3000  1.0E-07        51     51 5.00E-08   5.7-60.8 uB           -85.32
+      h-0.01 FM-plain    plain 0.3000  1.0E-07        56     56 5.00E-08   4.6-57.7 uB            67.05
+      t+0.01 FM-plain    plain 0.3000  1.0E-07        NO    161 1.49E-05   5.0-58.5 uB none (no stress)
+ h0.00 pinned-localTF local-TF 0.1000  1.0E-07        NO    300 1.42E-06   4.8-36.9 uB none (no stress)
+ t0.00 pinned-localTF local-TF 0.1000  1.0E-07        NO    300 1.87E-06   5.1-36.9 uB none (no stress)
+t-0.01 pinned-localTF local-TF 0.1000  1.0E-07        NO    300 2.07E-06   4.9-38.5 uB none (no stress)
+
+--- Findings ---
+1. tot_mag=3.16 uB pinned by QE two-Fermi-level (nspin=2) artefact.
+   Appeared stable but masked underlying spin texture instability.
+
+2. abs_mag oscillated 5-8 uB for 300 iters in all pinned runs.
+   Spin texture reorganising every iter -> charge density cannot converge.
+
+3. All pinned runs stall at ~1e-6 Ry regardless of strain mode or mixing.
+   Root cause is magnetic, not numerical.
+
+4. FM plain h+0.01 and h-0.01 converged cleanly in 51-56 iters.
+   These feed C11+2C12 extraction. abs_mag stable.
+
+5. t+0.01 FM plain failed (161 iters, best 1.49e-5).
+   Tetragonal strain worsened magnetic frustration vs hydrostatic.
+
+6. AFM sublattice init (CrA/CrB parity) resolved all three high-Cr tags
+   in ~50 iters with conv_thr=1e-5. abs_mag locked immediately.
+
+--- Dataset Flags for ML ---
+C11+2C12 : FM h+/-0.01 (plain, 1e-7) -- internally consistent
+C11-C12  : AFM tetra (local-TF, 1e-5) -- inconsistent with hydro setup
+C44      : AFM shear (local-TF, 1e-5) -- inconsistent with hydro setup
+ML flag  : afm_init=mixed, conv_thr=mixed, down-weight in training

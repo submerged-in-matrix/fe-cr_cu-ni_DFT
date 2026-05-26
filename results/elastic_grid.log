@@ -1,0 +1,494 @@
+nohup: ignoring input
+══════════════════════════════════════════════════════
+  Elastic Constants: Fe-Cr (BCC) — 17 compositions
+  Cu-Ni system deferred (commented out below)
+  QE binary : /root/q-e-qe-7.3.1/bin/pw.x
+  Project   : /root/fe-cr_cu-ni_DFT
+  CPU cores : 96  (OMP_NUM_THREADS=8)
+  Total calc: 170  (64 reusable from prior run)
+  Started   : Sat May 23 16:30:37 UTC 2026
+══════════════════════════════════════════════════════
+
+╔══════════════════════════════════════════════════════╗
+║  SYSTEM 1: Fe-Cr (BCC, 16 atoms) — 17 compositions ║
+╚══════════════════════════════════════════════════════╝
+
+── Fe16Cr0 (x=0) ──────────────────
+  [fecr_fe16cr00] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe16cr00_vcr.out
+    [1/170]
+  [fecr_fe16cr00] SA_EQ=5.648369829 Å, E=-5268.15689949 Ry, μ=34.19 μB
+  [fecr_fe16cr00] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=67.42 kbar)
+    [2/170]
+    hydro ε=0.00: SKIP (valid: P=-0.19 kbar)
+    [3/170]
+    hydro ε=0.01: SKIP (valid: P=-58.83 kbar)
+    [4/170]
+  [fecr_fe16cr00] hydro.dat written (3/3 valid)
+  [fecr_fe16cr00] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-7.79 S33=16.02 DS=23.8100 kbar)
+    [5/170]
+    tetra ε=0.00: SKIP (valid: S11=-0.19 S33=-0.19 DS=0.0000 kbar)
+    [6/170]
+    tetra ε=0.01: SKIP (valid: S11=7.49 S33=-14.46 DS=-21.9500 kbar)
+    [7/170]
+  [fecr_fe16cr00] tetra.dat written (3/3 valid)
+  [fecr_fe16cr00] Shear...
+    shear ε=-0.01: SKIP (valid: S12=23.99 kbar)
+    [8/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [9/170]
+    shear ε=0.01: SKIP (valid: S12=-23.99 kbar)
+    [10/170]
+  [fecr_fe16cr00] shear.dat written (3/3 valid)
+  [fecr_fe16cr00] ✓ Complete
+
+── Fe15Cr1 (x=.0625) ──────────────────
+  [fecr_fe15cr01] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe15cr01_vcr.out
+    [11/170]
+  [fecr_fe15cr01] SA_EQ=5.667991792 Å, E=-5187.11871419 Ry, μ=31.57 μB
+  [fecr_fe15cr01] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=60.60 kbar)
+    [12/170]
+    hydro ε=0.00: SKIP (valid: P=-0.28 kbar)
+    [13/170]
+    hydro ε=0.01: SKIP (valid: P=-52.91 kbar)
+    [14/170]
+  [fecr_fe15cr01] hydro.dat written (3/3 valid)
+  [fecr_fe15cr01] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-7.36 S33=13.45 DS=20.8100 kbar)
+    [15/170]
+    tetra ε=0.00: SKIP (valid: S11=-0.28 S33=-0.28 DS=0.0000 kbar)
+    [16/170]
+    tetra ε=0.01: SKIP (valid: S11=6.02 S33=-12.95 DS=-18.9700 kbar)
+    [17/170]
+  [fecr_fe15cr01] tetra.dat written (3/3 valid)
+  [fecr_fe15cr01] Shear...
+    shear ε=-0.01: SKIP (valid: S12=23.91 kbar)
+    [18/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [19/170]
+    shear ε=0.01: SKIP (valid: S12=-23.91 kbar)
+    [20/170]
+  [fecr_fe15cr01] shear.dat written (3/3 valid)
+  [fecr_fe15cr01] ✓ Complete
+
+── Fe14Cr2 (x=.1250) ──────────────────
+  [fecr_fe14cr02] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe14cr02_vcr.out
+    [21/170]
+  [fecr_fe14cr02] SA_EQ=5.676323735 Å, E=-5106.05220694 Ry, μ=27.61 μB
+  [fecr_fe14cr02] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=57.18 kbar)
+    [22/170]
+    hydro ε=0.00: SKIP (valid: P=-0.28 kbar)
+    [23/170]
+    hydro ε=0.01: SKIP (valid: P=-49.29 kbar)
+    [24/170]
+  [fecr_fe14cr02] hydro.dat written (3/3 valid)
+  [fecr_fe14cr02] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-6.32 S33=12.62 DS=18.9400 kbar)
+    [25/170]
+    tetra ε=0.00: SKIP (valid: S11=-0.28 S33=-0.28 DS=0.0000 kbar)
+    [26/170]
+    tetra ε=0.01: SKIP (valid: S11=5.77 S33=-11.57 DS=-17.3400 kbar)
+    [27/170]
+  [fecr_fe14cr02] tetra.dat written (3/3 valid)
+  [fecr_fe14cr02] Shear...
+    shear ε=-0.01: SKIP (valid: S12=25.33 kbar)
+    [28/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [29/170]
+    shear ε=0.01: SKIP (valid: S12=-25.33 kbar)
+    [30/170]
+  [fecr_fe14cr02] shear.dat written (3/3 valid)
+  [fecr_fe14cr02] ✓ Complete
+
+── Fe13Cr3 (x=.1875) ──────────────────
+  [fecr_fe13cr03] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe13cr03_vcr.out
+    [31/170]
+  [fecr_fe13cr03] SA_EQ=5.773779716 Å, E=-5024.98669745 Ry, μ=23.44 μB
+  [fecr_fe13cr03] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=-38.78 kbar)
+    [32/170]
+    hydro ε=0.00: SKIP (valid: P=-82.81 kbar)
+    [33/170]
+    hydro ε=0.01: SKIP (valid: P=-120.03 kbar)
+    [34/170]
+  [fecr_fe13cr03] hydro.dat written (3/3 valid)
+  [fecr_fe13cr03] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-71.01 S33=-81.78 DS=-10.7700 kbar)
+    [35/170]
+    tetra ε=0.00: SKIP (valid: S11=-66.44 S33=-90.99 DS=-24.5500 kbar)
+    [36/170]
+    tetra ε=0.01: SKIP (valid: S11=-61.98 S33=-99.86 DS=-37.8800 kbar)
+    [37/170]
+  [fecr_fe13cr03] tetra.dat written (3/3 valid)
+  [fecr_fe13cr03] Shear...
+    shear ε=-0.01: SKIP (valid: S12=22.19 kbar)
+    [38/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [39/170]
+    shear ε=0.01: SKIP (valid: S12=-22.19 kbar)
+    [40/170]
+  [fecr_fe13cr03] shear.dat written (3/3 valid)
+  [fecr_fe13cr03] ✓ Complete
+
+── Fe12Cr4 (x=.2500) ──────────────────
+  [fecr_fe12cr04] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe12cr04_vcr.out
+    [41/170]
+  [fecr_fe12cr04] SA_EQ=5.791568340 Å, E=-4943.89919534 Ry, μ=19.06 μB
+  [fecr_fe12cr04] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=-60.40 kbar)
+    [42/170]
+    hydro ε=0.00: SKIP (valid: P=-102.05 kbar)
+    [43/170]
+    hydro ε=0.01: SKIP (valid: P=-137.16 kbar)
+    [44/170]
+  [fecr_fe12cr04] hydro.dat written (3/3 valid)
+  [fecr_fe12cr04] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-92.78 S33=-100.55 DS=-7.7700 kbar)
+    [45/170]
+    tetra ε=0.00: SKIP (valid: S11=-88.59 S33=-108.74 DS=-20.1500 kbar)
+    [46/170]
+    tetra ε=0.01: SKIP (valid: S11=-84.18 S33=-117.45 DS=-33.2700 kbar)
+    [47/170]
+  [fecr_fe12cr04] tetra.dat written (3/3 valid)
+  [fecr_fe12cr04] Shear...
+    shear ε=-0.01: SKIP (valid: S12=21.44 kbar)
+    [48/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [49/170]
+    shear ε=0.01: SKIP (valid: S12=-21.44 kbar)
+    [50/170]
+  [fecr_fe12cr04] shear.dat written (3/3 valid)
+  [fecr_fe12cr04] ✓ Complete
+
+── Fe11Cr5 (x=.3125) ──────────────────
+  [fecr_fe11cr05] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe11cr05_vcr.out
+    [51/170]
+  [fecr_fe11cr05] SA_EQ=5.771268450 Å, E=-4862.86014489 Ry, μ=18.93 μB
+  [fecr_fe11cr05] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=-47.07 kbar)
+    [52/170]
+    hydro ε=0.00: SKIP (valid: P=-92.40 kbar)
+    [53/170]
+    hydro ε=0.01: SKIP (valid: P=-130.15 kbar)
+    [54/170]
+  [fecr_fe11cr05] hydro.dat written (3/3 valid)
+  [fecr_fe11cr05] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-78.73 S33=-90.61 DS=-11.8800 kbar)
+    [55/170]
+    tetra ε=0.00: SKIP (valid: S11=-73.61 S33=-101.72 DS=-28.1100 kbar)
+    [56/170]
+    tetra ε=0.01: SKIP (valid: S11=-68.73 S33=-112.08 DS=-43.3500 kbar)
+    [57/170]
+  [fecr_fe11cr05] tetra.dat written (3/3 valid)
+  [fecr_fe11cr05] Shear...
+    shear ε=-0.01: SKIP (valid: S12=22.24 kbar)
+    [58/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [59/170]
+    shear ε=0.01: SKIP (valid: S12=-22.24 kbar)
+    [60/170]
+  [fecr_fe11cr05] shear.dat written (3/3 valid)
+  [fecr_fe11cr05] ✓ Complete
+
+── Fe10Cr6 (x=.3750) ──────────────────
+  [fecr_fe10cr06] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe10cr06_vcr.out
+    [61/170]
+  [fecr_fe10cr06] SA_EQ=5.780297181 Å, E=-4781.80922349 Ry, μ=17.53 μB
+  [fecr_fe10cr06] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=71.74 kbar)
+    [62/170]
+    hydro ε=0.00: SKIP (valid: P=-103.41 kbar)
+    [63/170]
+    hydro ε=0.01: SKIP (valid: P=-48.81 kbar)
+    [64/170]
+  [fecr_fe10cr06] hydro.dat written (3/3 valid)
+  [fecr_fe10cr06] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=23.00 S33=7.52 DS=-15.4800 kbar)
+    [65/170]
+    tetra ε=0.00: SKIP (valid: S11=-77.97 S33=-116.18 DS=-38.2100 kbar)
+    [66/170]
+    tetra ε=0.01: SKIP (valid: S11=-72.66 S33=-127.34 DS=-54.6800 kbar)
+    [67/170]
+  [fecr_fe10cr06] tetra.dat written (3/3 valid)
+  [fecr_fe10cr06] Shear...
+    shear ε=-0.01: SKIP (valid: S12=26.51 kbar)
+    [68/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [69/170]
+    shear ε=0.01: SKIP (valid: S12=-21.48 kbar)
+    [70/170]
+  [fecr_fe10cr06] shear.dat written (3/3 valid)
+  [fecr_fe10cr06] ✓ Complete
+
+── Fe9Cr7 (x=.4375) ──────────────────
+  [fecr_fe09cr07] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe09cr07_vcr.out
+    [71/170]
+  [fecr_fe09cr07] SA_EQ=5.706038572 Å, E=-4700.75566940 Ry, μ=16.19 μB
+  [fecr_fe09cr07] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=9.78 kbar)
+    [72/170]
+    hydro ε=0.00: SKIP (valid: P=-46.76 kbar)
+    [73/170]
+    hydro ε=0.01: SKIP (valid: P=-92.21 kbar)
+    [74/170]
+  [fecr_fe09cr07] hydro.dat written (3/3 valid)
+  [fecr_fe09cr07] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-42.31 S33=-38.51 DS=3.8000 kbar)
+    [75/170]
+    tetra ε=0.00: SKIP (valid: S11=-36.70 S33=-51.93 DS=-15.2300 kbar)
+    [76/170]
+    tetra ε=0.01: SKIP (valid: S11=-31.20 S33=-64.07 DS=-32.8700 kbar)
+    [77/170]
+  [fecr_fe09cr07] tetra.dat written (3/3 valid)
+  [fecr_fe09cr07] Shear...
+    shear ε=-0.01: SKIP (valid: S12=32.28 kbar)
+    [78/170]
+    shear ε=0.00: SKIP (valid: S12=8.51 kbar)
+    [79/170]
+    shear ε=0.01: SKIP (valid: S12=-15.39 kbar)
+    [80/170]
+  [fecr_fe09cr07] shear.dat written (3/3 valid)
+  [fecr_fe09cr07] ✓ Complete
+
+── Fe8Cr8 (x=.5000) ──────────────────
+  [fecr_fe08cr08] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe08cr08_vcr.out
+    [81/170]
+  [fecr_fe08cr08] SA_EQ=5.656938171 Å, E=-4619.69034657 Ry, μ=14.16 μB
+  [fecr_fe08cr08] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=68.18 kbar)
+    [82/170]
+    hydro ε=0.00: SKIP (valid: P=-2.35 kbar)
+    [83/170]
+    hydro ε=0.01: SKIP (valid: P=-53.60 kbar)
+    [84/170]
+  [fecr_fe08cr08] hydro.dat written (3/3 valid)
+  [fecr_fe08cr08] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-8.60 S33=10.79 DS=19.3900 kbar)
+    [85/170]
+    tetra ε=0.00: SKIP (valid: S11=-2.35 S33=-2.34 DS=0.0100 kbar)
+    [86/170]
+    tetra ε=0.01: SKIP (valid: S11=3.96 S33=-13.91 DS=-17.8700 kbar)
+    [87/170]
+  [fecr_fe08cr08] tetra.dat written (3/3 valid)
+  [fecr_fe08cr08] Shear...
+    shear ε=-0.01: SKIP (valid: S12=37.40 kbar)
+    [88/170]
+    shear ε=0.00: SKIP (valid: S12=13.21 kbar)
+    [89/170]
+    shear ε=0.01: SKIP (valid: S12=-11.18 kbar)
+    [90/170]
+  [fecr_fe08cr08] shear.dat written (3/3 valid)
+  [fecr_fe08cr08] ✓ Complete
+
+── Fe7Cr9 (x=.5625) ──────────────────
+  [fecr_fe07cr09] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe07cr09_vcr.out
+    [91/170]
+  [fecr_fe07cr09] SA_EQ=5.643160430 Å, E=-4538.66595433 Ry, μ=12.34 μB
+  [fecr_fe07cr09] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=94.25 kbar)
+    [92/170]
+    hydro ε=0.00: SKIP (valid: P=18.52 kbar)
+    [93/170]
+    hydro ε=0.01: SKIP (valid: P=-38.97 kbar)
+    [94/170]
+  [fecr_fe07cr09] hydro.dat written (3/3 valid)
+  [fecr_fe07cr09] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=5.51 S33=28.00 DS=22.4900 kbar)
+    [95/170]
+    tetra ε=0.00: SKIP (valid: S11=12.65 S33=12.65 DS=0.0000 kbar)
+    [96/170]
+    tetra ε=0.01: SKIP (valid: S11=19.84 S33=-0.96 DS=-20.8000 kbar)
+    [97/170]
+  [fecr_fe07cr09] tetra.dat written (3/3 valid)
+  [fecr_fe07cr09] Shear...
+    shear ε=-0.01: SKIP (valid: S12=30.01 kbar)
+    [98/170]
+    shear ε=0.00: SKIP (valid: S12=5.37 kbar)
+    [99/170]
+    shear ε=0.01: SKIP (valid: S12=-19.35 kbar)
+    [100/170]
+  [fecr_fe07cr09] shear.dat written (3/3 valid)
+  [fecr_fe07cr09] ✓ Complete
+
+── Fe6Cr10 (x=.6250) ──────────────────
+  [fecr_fe06cr10] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe06cr10_vcr.out
+    [101/170]
+  [fecr_fe06cr10] SA_EQ=5.624807381 Å, E=-4457.63610225 Ry, μ=11.02 μB
+  [fecr_fe06cr10] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=127.15 kbar)
+    [102/170]
+    hydro ε=0.00: SKIP (valid: P=43.81 kbar)
+    [103/170]
+    hydro ε=0.01: SKIP (valid: P=-26.55 kbar)
+    [104/170]
+  [fecr_fe06cr10] hydro.dat written (3/3 valid)
+  [fecr_fe06cr10] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=23.86 S33=50.71 DS=26.8500 kbar)
+    [105/170]
+    tetra ε=0.00: SKIP (valid: S11=32.49 S33=32.50 DS=0.0100 kbar)
+    [106/170]
+    tetra ε=0.01: SKIP (valid: S11=41.41 S33=16.65 DS=-24.7600 kbar)
+    [107/170]
+  [fecr_fe06cr10] tetra.dat written (3/3 valid)
+  [fecr_fe06cr10] Shear...
+    shear ε=-0.01: SKIP (valid: S12=25.46 kbar)
+    [108/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [109/170]
+    shear ε=0.01: SKIP (valid: S12=-25.45 kbar)
+    [110/170]
+  [fecr_fe06cr10] shear.dat written (3/3 valid)
+  [fecr_fe06cr10] ✓ Complete
+
+── Fe5Cr11 (x=.6875) ──────────────────
+  [fecr_fe05cr11] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe05cr11_vcr.out
+    [111/170]
+  [fecr_fe05cr11] SA_EQ=5.636858353 Å, E=-4376.59831296 Ry, μ=9.55 μB
+  [fecr_fe05cr11] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=121.08 kbar)
+    [112/170]
+    hydro ε=0.00: SKIP (valid: P=39.22 kbar)
+    [113/170]
+    hydro ε=0.01: SKIP (valid: P=-31.45 kbar)
+    [114/170]
+  [fecr_fe05cr11] hydro.dat written (3/3 valid)
+  [fecr_fe05cr11] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=19.04 S33=49.58 DS=30.5400 kbar)
+    [115/170]
+    tetra ε=0.00: SKIP (valid: S11=29.11 S33=29.11 DS=0.0000 kbar)
+    [116/170]
+    tetra ε=0.01: SKIP (valid: S11=39.17 S33=10.28 DS=-28.8900 kbar)
+    [117/170]
+  [fecr_fe05cr11] tetra.dat written (3/3 valid)
+  [fecr_fe05cr11] Shear...
+    shear ε=-0.01: SKIP (valid: S12=24.04 kbar)
+    [118/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [119/170]
+    shear ε=0.01: SKIP (valid: S12=-24.04 kbar)
+    [120/170]
+  [fecr_fe05cr11] shear.dat written (3/3 valid)
+  [fecr_fe05cr11] ✓ Complete
+
+── Fe4Cr12 (x=.7500) ──────────────────
+  [fecr_fe04cr12] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe04cr12_vcr.out
+    [121/170]
+  [fecr_fe04cr12] SA_EQ=5.650392472 Å, E=-4295.55312291 Ry, μ=7.56 μB
+  [fecr_fe04cr12] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=107.14 kbar)
+    [122/170]
+    hydro ε=0.00: SKIP (valid: P=25.76 kbar)
+    [123/170]
+    hydro ε=0.01: SKIP (valid: P=-43.25 kbar)
+    [124/170]
+  [fecr_fe04cr12] hydro.dat written (3/3 valid)
+  [fecr_fe04cr12] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=8.02 S33=40.81 DS=32.7900 kbar)
+    [125/170]
+    tetra ε=0.00: SKIP (valid: S11=19.49 S33=19.49 DS=0.0000 kbar)
+    [126/170]
+    tetra ε=0.01: SKIP (valid: S11=30.58 S33=-1.14 DS=-31.7200 kbar)
+    [127/170]
+  [fecr_fe04cr12] tetra.dat written (3/3 valid)
+  [fecr_fe04cr12] Shear...
+    shear ε=-0.01: SKIP (valid: S12=22.53 kbar)
+    [128/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [129/170]
+    shear ε=0.01: SKIP (valid: S12=-22.53 kbar)
+    [130/170]
+  [fecr_fe04cr12] shear.dat written (3/3 valid)
+  [fecr_fe04cr12] ✓ Complete
+
+── Fe3Cr13 (x=.8125) ──────────────────
+  [fecr_fe03cr13] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe03cr13_vcr.out
+    [131/170]
+  [fecr_fe03cr13] SA_EQ=5.675143966 Å, E=-4214.53806678 Ry, μ=5.43 μB
+  [fecr_fe03cr13] Hydrostatic...
+    hydro ε=-0.01: SKIP (valid: P=80.13 kbar)
+    [132/170]
+    hydro ε=0.00: SKIP (valid: P=6.36 kbar)
+    [133/170]
+    hydro ε=0.01: SKIP (valid: P=-59.01 kbar)
+    [134/170]
+  [fecr_fe03cr13] hydro.dat written (3/3 valid)
+  [fecr_fe03cr13] Tetragonal...
+    tetra ε=-0.01: SKIP (valid: S11=-9.64 S33=30.50 DS=40.1400 kbar)
+    [135/170]
+    tetra ε=0.00: SKIP (valid: S11=4.17 S33=4.17 DS=0.0000 kbar)
+    [136/170]
+    tetra ε=0.01: SKIP (valid: S11=17.20 S33=-21.20 DS=-38.4000 kbar)
+    [137/170]
+  [fecr_fe03cr13] tetra.dat written (3/3 valid)
+  [fecr_fe03cr13] Shear...
+    shear ε=-0.01: SKIP (valid: S12=22.02 kbar)
+    [138/170]
+    shear ε=0.00: SKIP (valid: S12=0.00 kbar)
+    [139/170]
+    shear ε=0.01: SKIP (valid: S12=-22.02 kbar)
+    [140/170]
+  [fecr_fe03cr13] shear.dat written (3/3 valid)
+  [fecr_fe03cr13] ✓ Complete
+
+── Fe2Cr14 (x=.8750) ──────────────────
+  [fecr_fe02cr14] vc-relax...
+    SKIP (bfgs done, sanity SCF converged): outputs/fecr_fe02cr14_vcr.out
+    [141/170]
+  [fecr_fe02cr14] SA_EQ=5.692293919 Å, E=-4133.52802918 Ry, μ=3.39 μB
+  [fecr_fe02cr14] Hydrostatic...
+    SKIP (scf converged): outputs/fecr_fe02cr14_h-0.01.out
+    hydro ε=-0.01: P=67.05 kbar
+    [142/170]
+    >> RUNNING: fecr_fe02cr14_h0.00.in  →  fecr_fe02cr14_h0.00.out  [16:30:43]
+    WARNING: pw.x did not converge — check outputs/fecr_fe02cr14_h0.00.out
+ERROR: get_P: no P= line in outputs/fecr_fe02cr14_h0.00.out
+    hydro ε=0.00: P=NaN kbar
+    [143/170] ~68 min remaining
+    ERROR: hydro ε=0.00 failed — P is NaN/empty
+    SKIP (scf converged): outputs/fecr_fe02cr14_h0.01.out
+    hydro ε=0.01: P=-85.32 kbar
+    [144/170] ~65 min remaining
+  [fecr_fe02cr14] WARNING: hydro.dat NOT written — one or more strains failed
+  [fecr_fe02cr14] Tetragonal...
+    >> RUNNING: fecr_fe02cr14_t-0.01.in  →  fecr_fe02cr14_t-0.01.out  [22:32:03]
+    WARNING: pw.x did not converge — check outputs/fecr_fe02cr14_t-0.01.out
+ERROR: get_s11: no stress block in outputs/fecr_fe02cr14_t-0.01.out (SCF not converged?)
+ERROR: get_s33: no stress block in outputs/fecr_fe02cr14_t-0.01.out (SCF not converged?)
+    tetra ε=-0.01: S11=NaN S33=NaN DS=NaN kbar
+    [145/170] ~137 min remaining
+    ERROR: tetra ε=-0.01 failed — NaN/empty stress
+    >> RUNNING: fecr_fe02cr14_t0.00.in  →  fecr_fe02cr14_t0.00.out  [05:48:08]
+    WARNING: pw.x did not converge — check outputs/fecr_fe02cr14_t0.00.out
+ERROR: get_s11: no stress block in outputs/fecr_fe02cr14_t0.00.out (SCF not converged?)
+ERROR: get_s33: no stress block in outputs/fecr_fe02cr14_t0.00.out (SCF not converged?)
+    tetra ε=0.00: S11=NaN S33=NaN DS=NaN kbar
+    [146/170] ~160 min remaining
+    ERROR: tetra ε=0.00 failed — NaN/empty stress
+    >> RUNNING: fecr_fe02cr14_t0.01.in  →  fecr_fe02cr14_t0.01.out  [08:48:16]
+Terminated
+    WARNING: pw.x did not converge — check outputs/fecr_fe02cr14_t0.01.out
+ERROR: get_s11: no stress block in outputs/fecr_fe02cr14_t0.01.out (SCF not converged?)
+ERROR: get_s33: no stress block in outputs/fecr_fe02cr14_t0.01.out (SCF not converged?)
+    tetra ε=0.01: S11=NaN S33=NaN DS=NaN kbar
+    [147/170] ~153 min remaining
+    ERROR: tetra ε=0.01 failed — NaN/empty stress
+  [fecr_fe02cr14] WARNING: tetra.dat NOT written — one or more strains failed
+  [fecr_fe02cr14] Shear...
+    >> RUNNING: fecr_fe02cr14_s-0.01.in  →  fecr_fe02cr14_s-0.01.out  [08:52:10]
