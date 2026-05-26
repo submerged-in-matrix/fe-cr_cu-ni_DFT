@@ -8,7 +8,7 @@ tmp/
 *.igk*
 *.xml
 crash
-nohup.out
+#nohup.out
 
 # ── Generated input files (reproducible from scripts) ────────────────────────
 inputs/
