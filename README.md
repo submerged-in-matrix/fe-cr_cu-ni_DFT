@@ -61,7 +61,6 @@ fe-cr_cu-ni_DFT/
 
 ## Physical Background
 
-### Why elastic constants matter
 The elastic tensor fully characterises the linear mechanical response of a
 crystal. For cubic symmetry (BCC Fe-Cr, FCC Cu-Ni) only three independent
 constants exist: C₁₁ (resistance to uniaxial strain), C₁₂ (transverse
