@@ -1,0 +1,6 @@
+conv_thr,afm_init,n_calcs,tags,sigma_thr_gpa,basis
+1e-08,False,90,"fe07cr09, fe08cr08, fe09cr07, fe10cr06, fe11cr05, fe12cr04, fe13cr03, fe14cr02, fe15cr01, fe16cr00",1.0,Baseline. No direct comparison. All others relative to this.
+1e-07,False,38,"fe02cr14, fe03cr13, fe04cr12, fe05cr11, fe06cr10",4.381,fe06cr10 per-calc stress interpolation from 1e-8 reference. Conflates threshold noise with physics non-linearity.
+1e-05,True,25,"fe00cr16, fe01cr15, fe02cr14",0.478,fe02cr14 per-calc stress interpolation from 1e-7 reference + direct h0.00 thr7 comparison. AFM effect unquantified separately.
+,False,10,fe09cr07,31.54,vcr_geometry — iteration_budget — poly/spline residual mean across targets and models
+,False,10,fe02cr14,31.76,vcr_geometry — physics_afm_boundary — poly/spline residual mean across targets and models
