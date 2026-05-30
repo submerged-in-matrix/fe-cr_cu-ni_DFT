@@ -3,20 +3,22 @@ data_utils.py
 =============
 Shared data loading and preprocessing for all ML surrogate notebooks.
 
-Import at the top of each notebook:
-    from data_utils import load_data, LOO_evaluate, plot_loo_residuals,
-                          load_asymmetry, load_all_dat, TARGETS, PALETTE
+Two data modes — pass the appropriate CSV:
+    elastic_constants_fecr_raw.csv       → load_data(...) → uniform noise
+    elastic_constants_fecr_corrected.csv → load_data(...) → empirical per-constant noise
 
-Pipeline: DFT extraction → enrich_csv.py → [this module] → GP / XGBoost / MLP → FEM
+Noise columns in both CSVs:
+    noise_C11_2C12  σ (GPa) for C11+2C12 combination
+    noise_C11_C12   σ (GPa) for C11-C12  combination
+    noise_C44       σ (GPa) for C44
 
-Accuracy tiers (from session_summary_may25_2026.md + run_elastic_grid.sh):
-─────────────────────────────────────────────────────────────────────────────
-  Tier A │ n_cr 0–11  │ conv_thr=1e-8 │ FM init   │ noise_gpa = 1.0
-  Tier B │ n_cr 12–13 │ conv_thr=1e-7 │ FM init   │ noise_gpa = 2.0
-  Tier C │ n_cr 14–16 │ conv_thr=1e-5 │ AFM init  │ noise_gpa = 10.0
-─────────────────────────────────────────────────────────────────────────────
-noise_gpa is the recommended σ (GPa) per point for ML weighting.
-It encodes BOTH convergence quality AND magnetic initialisation uncertainty.
+Pipeline:
+    DFT extraction
+        → empirical_uncertainty.ipynb  (produces per_calc_uncertainty.csv, empirical_sigma.csv)
+        → enrich_csv.py                (produces _raw.csv and _corrected.csv)
+        → [this module]                (loads either CSV)
+        → GP / XGBoost / MLP
+        → FEM
 """
 
 import numpy as np
@@ -24,8 +26,7 @@ import pandas as pd
 import os
 
 
-# ── Pure numpy replacements for sklearn metrics and CV ────────────────────────
-# data_utils.py has zero sklearn dependency by design.
+# ── Pure numpy replacements — zero sklearn dependency ─────────────────────────
 
 class LeaveOneOut:
     """Minimal LOO splitter — same interface as sklearn.model_selection.LeaveOneOut."""
@@ -47,55 +48,55 @@ def r2_score(y_true, y_pred):
     ss_tot = np.sum((y_true - y_true.mean()) ** 2)
     return 1.0 - ss_res / ss_tot if ss_tot > 0 else 0.0
 
+
 # ── Shared constants ──────────────────────────────────────────────────────────
 TARGETS    = ['C11', 'C12', 'C44']
 PALETTE    = {'C11': 'steelblue', 'C12': 'darkorange', 'C44': 'seagreen'}
-N_ATOMS    = 16      # BCC supercell size
-EPS_STRAIN = 0.01    # strain magnitude used in DFT
+N_ATOMS    = 16
+EPS_STRAIN = 0.01
 
-# Tier noise values (GPa) — kept here for notebooks that need them as scalars
-NOISE_TIER = {'A': 1.0, 'B': 2.0, 'C': 10.0}
+# Constant → noise column mapping
+NOISE_COL = {
+    'C11': 'noise_C11_2C12',   # C11 is recovered from C11+2C12 and C11-C12
+    'C12': 'noise_C11_C12',    # C12 same
+    'C44': 'noise_C44',
+}
 
-# ── Backwards-compatible scalar noise (deprecated — use noise_gpa column) ─────
-# These remain so old code doesn't break, but load_data() now prefers noise_gpa
-NOISE_NORMAL  = 1.0   # Tier A
-NOISE_FLAGGED = 10.0  # Tier C
-
-
-def _assign_tier(n_cr: int) -> str:
-    """Map n_cr → accuracy tier label A/B/C."""
-    if   n_cr <= 11: return 'A'
-    elif n_cr <= 13: return 'B'
-    else:            return 'C'
+# Backwards-compatible scalar — use noise columns from CSV instead
+NOISE_NORMAL  = 1.0
+NOISE_FLAGGED = 10.0
 
 
 def load_data(csv_path: str) -> dict:
     """
-    Load elastic constants CSV. Handles both old CSVs (no noise_gpa column)
-    and new enriched CSVs (with conv_thr, afm_init, noise_gpa).
+    Load elastic constants CSV — works with both _raw and _corrected variants.
 
-    If noise_gpa is missing from CSV, assigns it from the tier table above
-    and prints a warning — run enrich_csv.py to fix permanently.
+    Noise columns noise_C11_2C12, noise_C11_C12, noise_C44 must be present.
+    If missing (old CSV), falls back to uniform noise=1.0 with a warning.
 
     Returns
     -------
     dict with keys:
-        df           - full DataFrame (with all metadata columns)
-        X            - (N,1) Cr fraction — training feature
-        X_pred       - (200,1) dense prediction grid
-        x_pred_atoms - (200,)  same in atom units for x-axis
-        targets      - dict {C11/C12/C44: np.array}
-        alpha        - (N,) noise VARIANCE array  = noise_gpa²
-                       used directly in GP kernel as K_noise = diag(alpha)
-        noise_gpa    - (N,) noise σ array (std dev, not variance)
-        flagged      - (N,) bool — True for Tier C (conv_thr=1e-5, AFM)
-        tier         - (N,) str array — 'A', 'B', or 'C' per point
+        df              full DataFrame
+        X               (N,1) Cr fraction
+        X_pred          (200,1) dense prediction grid
+        x_pred_atoms    (200,) atom count axis
+        targets         {C11/C12/C44: np.array}
+        alpha           dict {C11/C12/C44: (N,) noise VARIANCE array}
+                        — use as GP diagonal noise per target
+        noise_gpa       dict {C11/C12/C44: (N,) noise σ array}
+                        — use as sample weights in XGB/MLP
+        alpha_mean      (N,) mean noise variance across C11,C12,C44
+                        — convenience for single-noise models
+        flagged         (N,) bool — True where any noise > 1.0
+        afm_init        (N,) bool
+        vcr_geometry    (N,) bool
+        mode            str — 'raw' or 'corrected'
     """
     assert os.path.exists(csv_path), f"CSV not found: {csv_path}"
     df = pd.read_csv(csv_path)
 
-    # ── Normalise column names to internal standard ───────────────────────────
-    # CSV uses 'cr_count' and 'cr_frac'; internally we use 'n_cr' and 'x_cr'
+    # Normalise column names
     if 'cr_count' in df.columns and 'n_cr' not in df.columns:
         df['n_cr'] = df['cr_count']
     if 'cr_frac' in df.columns and 'x_cr' not in df.columns:
@@ -105,108 +106,96 @@ def load_data(csv_path: str) -> dict:
     missing  = [c for c in required if c not in df.columns]
     assert not missing, f"CSV missing columns: {missing}"
 
-    # ── Derived columns ───────────────────────────────────────────────────────
+    # Derived
     if 'x_cr' not in df.columns:
         df['x_cr'] = df['n_cr'] / float(N_ATOMS)
-
     if 'B' not in df.columns:
         df['B'] = (df['C11'] + 2*df['C12']) / 3.0
 
-    # ── Accuracy tier ─────────────────────────────────────────────────────────
-    df['tier'] = df['n_cr'].apply(_assign_tier)
+    # Detect mode from filename
+    mode = 'corrected' if 'corrected' in os.path.basename(csv_path) else 'raw'
 
-    # ── conv_thr ──────────────────────────────────────────────────────────────
-    if 'conv_thr' not in df.columns:
-        tier_to_thr = {'A': 1e-8, 'B': 1e-7, 'C': 1e-5}
-        df['conv_thr'] = df['tier'].map(tier_to_thr)
-        print("INFO: 'conv_thr' column not in CSV — assigned from tier table.")
-        print("      Run enrich_csv.py to add it permanently.")
+    # ── Noise columns ─────────────────────────────────────────────────────────
+    noise_cols_present = all(c in df.columns for c in
+                             ['noise_C11_2C12','noise_C11_C12','noise_C44'])
+    if not noise_cols_present:
+        print("WARNING: noise columns not found — falling back to uniform σ=1.0")
+        print("         Run enrich_csv.py to produce _raw.csv and _corrected.csv")
+        df['noise_C11_2C12'] = 1.0
+        df['noise_C11_C12']  = 1.0
+        df['noise_C44']      = 1.0
+        mode = 'raw_fallback'
 
-    # ── afm_init ──────────────────────────────────────────────────────────────
+    # afm_init / vcr_geometry_flag
     if 'afm_init' not in df.columns:
-        df['afm_init'] = df['tier'].map({'A': False, 'B': False, 'C': True})
-        print("INFO: 'afm_init' column not in CSV — assigned from tier table.")
-
-    # ── noise_gpa — THE KEY COLUMN ────────────────────────────────────────────
-    if 'noise_gpa' not in df.columns:
-        df['noise_gpa'] = df['tier'].map(NOISE_TIER)
-        print("WARNING: 'noise_gpa' column not in CSV — assigned from tier table.")
-        print("         Run enrich_csv.py to add it permanently to the CSV.")
-        print("         Assigned values:")
-        for tier, grp in df.groupby('tier'):
-            print(f"           Tier {tier}: {grp['tag'].tolist()} → σ={NOISE_TIER[tier]} GPa")
-    else:
-        # Verify CSV values are consistent with tier table (warn if not)
-        expected = df['tier'].map(NOISE_TIER)
-        mismatch = df[df['noise_gpa'] != expected]
-        if len(mismatch) > 0:
-            print(f"WARNING: {len(mismatch)} rows have noise_gpa inconsistent with tier table:")
-            for _, r in mismatch.iterrows():
-                print(f"  {r['tag']}: CSV noise_gpa={r['noise_gpa']}, "
-                      f"tier {r['tier']} expects {NOISE_TIER[r['tier']]}")
-            print("  Using CSV values. Edit noise_gpa in CSV if you want to override.")
-
-    # ── loose_thr — backwards compatibility ──────────────────────────────────
+        df['afm_init'] = False
+    if 'vcr_geometry_flag' not in df.columns:
+        df['vcr_geometry_flag'] = False
     if 'loose_thr' not in df.columns:
-        df['loose_thr'] = df['tier'] == 'C'
-    df['loose_thr'] = df['loose_thr'].astype(bool)
+        df['loose_thr'] = False
 
-    # ── Build output arrays ───────────────────────────────────────────────────
+    # ── Build arrays ──────────────────────────────────────────────────────────
     X            = df['x_cr'].values.reshape(-1, 1)
     X_pred       = np.linspace(0, 1, 200).reshape(-1, 1)
     x_pred_atoms = (X_pred * N_ATOMS).flatten()
-    noise_gpa    = df['noise_gpa'].values.astype(float)
-    alpha        = noise_gpa ** 2          # variance = σ²
-    flagged      = df['loose_thr'].values  # Tier C only
-    tier_arr     = df['tier'].values
     tgt          = {t: df[t].values.astype(float) for t in TARGETS}
 
+    # Per-constant noise — C11 and C12 both come from C11+2C12 and C11-C12
+    # C11 = (C11+2C12 + 2*C11-C12)/3 → propagate both noise sources
+    # C12 = (C11+2C12 -   C11-C12)/3 → same
+    # For ML purposes assign each constant its primary noise column
+    noise_gpa = {
+        'C11': df['noise_C11_2C12'].values.astype(float),
+        'C12': df['noise_C11_C12'].values.astype(float),
+        'C44': df['noise_C44'].values.astype(float),
+    }
+    alpha = {t: noise_gpa[t]**2 for t in TARGETS}
+
+    # Convenience: mean alpha across targets for single-noise models
+    alpha_mean = np.mean([alpha[t] for t in TARGETS], axis=0)
+
+    flagged      = df['loose_thr'].values.astype(bool)
+    afm_init     = df['afm_init'].values.astype(bool)
+    vcr_geometry = df['vcr_geometry_flag'].values.astype(bool)
+
     # ── Print summary ─────────────────────────────────────────────────────────
-    print(f"\nLoaded {len(df)} points across {len(set(tier_arr))} accuracy tiers:")
-    for t in ['A', 'B', 'C']:
-        mask = tier_arr == t
-        tags = df.loc[mask, 'tag'].tolist()
-        thr  = df.loc[mask, 'conv_thr'].iloc[0] if mask.any() else '—'
-        afm  = df.loc[mask, 'afm_init'].iloc[0] if mask.any() else '—'
-        σ    = noise_gpa[mask][0] if mask.any() else '—'
-        print(f"  Tier {t}: {sum(mask):2d} tags | conv_thr={thr:.0e} | "
-              f"afm_init={afm} | noise_gpa={σ} GPa")
-        print(f"           {tags}")
+    print(f"\nLoaded {len(df)} tags — mode: {mode.upper()}")
+    print(f"{'tag':<14} {'n_cr':>4} "
+          f"{'σ C11+2C12':>11} {'σ C11-C12':>10} {'σ C44':>7} "
+          f"{'afm':>5} {'vcr_geo':>8}")
+    print('-' * 60)
+    for _, r in df.iterrows():
+        print(f"{r['tag']:<14} {int(r['n_cr']):>4} "
+              f"{r['noise_C11_2C12']:>11.3f} {r['noise_C11_C12']:>10.3f} "
+              f"{r['noise_C44']:>7.3f} "
+              f"{str(r['afm_init']):>5} {str(r['vcr_geometry_flag']):>8}")
 
     return dict(
         df=df,
         X=X, X_pred=X_pred, x_pred_atoms=x_pred_atoms,
         targets=tgt,
-        alpha=alpha,          # (N,) noise VARIANCE — use in GP
-        noise_gpa=noise_gpa,  # (N,) noise σ       — use in XGB/MLP as sample weight
-        flagged=flagged,       # (N,) bool           — Tier C mask for plots
-        tier=tier_arr,         # (N,) str            — full tier labels
+        alpha=alpha,           # {target: (N,) variance} — per-constant GP noise
+        noise_gpa=noise_gpa,   # {target: (N,) σ}        — per-constant sample weight
+        alpha_mean=alpha_mean, # (N,) mean variance       — convenience
+        flagged=flagged,
+        afm_init=afm_init,
+        vcr_geometry=vcr_geometry,
+        mode=mode,
     )
 
 
-def LOO_evaluate(model_fn, X: np.ndarray, y: np.ndarray,
-                 extra_kw: dict = None) -> dict:
+def LOO_evaluate(model_fn, X, y, extra_kw=None):
     """
-    Generic Leave-One-Out cross-validation.
-
-    Parameters
-    ----------
-    model_fn : callable — (X_train, y_train, **extra_kw) → fitted model
-    X        : (N,1) feature array
-    y        : (N,)  target values
-    extra_kw : dict  — passed to model_fn each fold
-                       per-point arrays are automatically sliced to train indices
-
-    Returns
-    -------
-    dict: loo_true, loo_preds, mae, r2, residuals
+    Generic LOO cross-validation.
+    model_fn(X_train, y_train, **extra_kw) → fitted model with .predict(X)
+    Per-point arrays in extra_kw are auto-sliced to train indices.
     """
     if extra_kw is None:
         extra_kw = {}
     loo = LeaveOneOut()
     preds, trues = [], []
     for tr, te in loo.split(X):
-        kw = {k: v[tr] if (hasattr(v, '__len__') and len(v) == len(X)) else v
+        kw = {k: v[tr] if (hasattr(v,'__len__') and len(v)==len(X)) else v
               for k, v in extra_kw.items()}
         model = model_fn(X[tr], y[tr], **kw)
         preds.append(float(model.predict(X[te])))
@@ -219,90 +208,81 @@ def LOO_evaluate(model_fn, X: np.ndarray, y: np.ndarray,
                 residuals=trues - preds)
 
 
-def plot_loo_residuals(ax, residuals: np.ndarray, n_cr: np.ndarray,
-                       tier: np.ndarray, title: str):
+def plot_loo_residuals(ax, residuals, n_cr, tier_or_flagged, title):
     """
-    Reusable residual bar chart coloured by accuracy tier.
-
-    Tier A: steelblue  (reference quality)
-    Tier B: goldenrod  (slightly looser)
-    Tier C: tomato     (loosest + AFM init)
+    Residual bar chart. tier_or_flagged accepts:
+        - str array ('A','B','C') → coloured by tier
+        - bool array             → red if True, blue if False
     """
-    tier_colours = {'A': 'steelblue', 'B': 'goldenrod', 'C': 'tomato'}
-    # Accept either tier labels ('A','B','C') or legacy bool flagged array
-    if tier.dtype == bool:
-        cols = ['tomato' if f else 'steelblue' for f in tier]
+    tier_colours = {'A':'steelblue','B':'goldenrod','C':'tomato'}
+    if hasattr(tier_or_flagged[0], 'item'):
+        arr = tier_or_flagged
     else:
-        cols = [tier_colours.get(t, 'steelblue') for t in tier]
+        arr = tier_or_flagged
+    if arr.dtype == bool or arr.dtype == np.bool_:
+        cols = ['tomato' if f else 'steelblue' for f in arr]
+    else:
+        cols = [tier_colours.get(t,'steelblue') for t in arr]
     ax.bar(n_cr, residuals, color=cols, edgecolor='k', linewidth=0.5)
     ax.axhline(0, color='k', linewidth=1)
     ax.set_xlabel('Cr atoms (out of 16)')
     ax.set_ylabel('Residual (GPa)')
     ax.set_title(title)
     ax.grid(alpha=0.3, axis='y')
-    # Legend
     from matplotlib.patches import Patch
-    handles = [Patch(color=c, label=f'Tier {t}') for t, c in tier_colours.items()]
+    handles = [Patch(color=c, label=f'Tier {t}')
+               for t, c in tier_colours.items()]
     ax.legend(handles=handles, fontsize=8, loc='upper left')
 
 
-def read_hydro(path: str):
-    """Read hydro .dat → dict with P_minus, P_zero, P_plus (kbar). None if missing."""
+# ── .dat file readers ─────────────────────────────────────────────────────────
+
+def read_hydro(path):
     if not os.path.exists(path): return None
     d = np.loadtxt(path); d = d[d[:,0].argsort()]
-    return {'P_minus': d[0,1], 'P_zero': d[1,1], 'P_plus': d[2,1]}
+    return {'P_minus':d[0,1],'P_zero':d[1,1],'P_plus':d[2,1]}
 
 
-def read_shear(path: str):
-    """Read shear .dat → dict with S12_minus, S12_zero, S12_plus (kbar). None if missing."""
+def read_shear(path):
     if not os.path.exists(path): return None
     d = np.loadtxt(path); d = d[d[:,0].argsort()]
-    return {'S12_minus': d[0,1], 'S12_zero': d[1,1], 'S12_plus': d[2,1]}
+    return {'S12_minus':d[0,1],'S12_zero':d[1,1],'S12_plus':d[2,1]}
 
 
-def read_tetra(path: str):
-    """Read tetra .dat → dict with S11/S33/DS _minus/zero/plus (kbar). None if missing."""
+def read_tetra(path):
     if not os.path.exists(path): return None
     d = np.loadtxt(path); d = d[d[:,0].argsort()]
-    return {'S11_minus': d[0,1], 'S11_zero': d[1,1], 'S11_plus': d[2,1],
-            'S33_minus': d[0,2], 'S33_zero': d[1,2], 'S33_plus': d[2,2],
-            'DS_minus':  d[0,3], 'DS_zero':  d[1,3], 'DS_plus':  d[2,3]}
+    return {'S11_minus':d[0,1],'S11_zero':d[1,1],'S11_plus':d[2,1],
+            'S33_minus':d[0,2],'S33_zero':d[1,2],'S33_plus':d[2,2],
+            'DS_minus': d[0,3],'DS_zero': d[1,3],'DS_plus': d[2,3]}
 
 
-def load_asymmetry(df: pd.DataFrame, dat_root: str) -> pd.DataFrame:
-    """
-    Build tension-compression asymmetry DataFrame from hydro .dat files.
-    Files: dat_root/fecr_{tag}_hydro.dat  (flat directory, no subdirs)
-    asymmetry_kbar = P(+ε) + P(−ε) − 2·P(0)   (0 = perfectly harmonic)
-    """
+def load_asymmetry(df, dat_root):
+    """Tension-compression asymmetry from hydro .dat files."""
     records = []
     for row in df.itertuples():
-        tag  = row.tag
-        h    = read_hydro(os.path.join(dat_root, f'fecr_{tag}_hydro.dat'))
+        h = read_hydro(os.path.join(dat_root, f'fecr_{row.tag}_hydro.dat'))
         if h is None:
-            print(f'  SKIP {tag}: hydro.dat not found in {dat_root}')
+            print(f'  SKIP {row.tag}: hydro.dat not found')
             continue
-        records.append({'tag': tag, 'n_cr': row.n_cr, 'x_cr': row.x_cr,
-                        'P_minus': h['P_minus'], 'P_zero': h['P_zero'],
-                        'P_plus': h['P_plus'],
-                        'asymmetry_kbar': h['P_plus'] + h['P_minus'] - 2*h['P_zero'],
-                        'tier': _assign_tier(row.n_cr),
-                        'loose_thr': row.loose_thr})
+        records.append({'tag':row.tag,'n_cr':row.n_cr,'x_cr':row.x_cr,
+                        'P_minus':h['P_minus'],'P_zero':h['P_zero'],
+                        'P_plus':h['P_plus'],
+                        'asymmetry_kbar':h['P_plus']+h['P_minus']-2*h['P_zero']})
     return pd.DataFrame(records)
 
 
-def load_all_dat(df: pd.DataFrame, dat_root: str) -> pd.DataFrame:
-    """Load all three strain types for all tags into one wide DataFrame (kbar)."""
+def load_all_dat(df, dat_root):
+    """All three strain types for all tags into one wide DataFrame (kbar)."""
     records = []
     for row in df.itertuples():
         tag = row.tag
         h = read_hydro(os.path.join(dat_root, f'fecr_{tag}_hydro.dat'))
         s = read_shear(os.path.join(dat_root, f'fecr_{tag}_shear.dat'))
         t = read_tetra(os.path.join(dat_root, f'fecr_{tag}_tetra.dat'))
-        rec = {'tag': tag, 'n_cr': row.n_cr, 'x_cr': row.x_cr,
-               'tier': _assign_tier(row.n_cr), 'loose_thr': row.loose_thr}
-        if h: rec.update({f'hydro_{k}': v for k, v in h.items()})
-        if s: rec.update({f'shear_{k}': v for k, v in s.items()})
-        if t: rec.update({f'tetra_{k}': v for k, v in t.items()})
+        rec = {'tag':tag,'n_cr':row.n_cr,'x_cr':row.x_cr}
+        if h: rec.update({f'hydro_{k}':v for k,v in h.items()})
+        if s: rec.update({f'shear_{k}':v for k,v in s.items()})
+        if t: rec.update({f'tetra_{k}':v for k,v in t.items()})
         records.append(rec)
     return pd.DataFrame(records)
