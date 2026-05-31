@@ -172,7 +172,7 @@ class GaussianProcessScratch:
                 theta0,
                 args=(X, y, noise_var),
                 method='L-BFGS-B',
-                bounds=[(-5, 5), (-4, 2)],   # log-space bounds for σ² and ℓ
+                bounds=[(-5, 10), (-4, 2)],  
                 options={'maxiter': 200, 'ftol': 1e-10}
             )
             if res.fun < best_nll:
