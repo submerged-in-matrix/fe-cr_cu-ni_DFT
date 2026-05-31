@@ -71,9 +71,6 @@ def load_data(csv_path: str) -> dict:
     """
     Load elastic constants CSV — works with both _raw and _corrected variants.
 
-    Noise columns noise_C11_2C12, noise_C11_C12, noise_C44 must be present.
-    If missing (old CSV), falls back to uniform noise=1.0 with a warning.
-
     Returns
     -------
     dict with keys:
@@ -88,9 +85,17 @@ def load_data(csv_path: str) -> dict:
                         — use as sample weights in XGB/MLP
         alpha_mean      (N,) mean noise variance across C11,C12,C44
                         — convenience for single-noise models
-        flagged         (N,) bool — True where any noise > 1.0
-        afm_init        (N,) bool
-        vcr_geometry    (N,) bool
+        flagged         (N,) bool — True where loose_thr flag is set
+        afm_init        (N,) bool — True where AFM initialisation was used
+        vcr_geometry    (N,) bool — True where vc-relax did not converge cleanly
+        cubic_enforced  (N,) bool — True where cubic symmetry enforcement
+                        introduced a reference geometry error (b/c != a after
+                        vc-relax). First-order effect cancels in central
+                        differences; second-order leak included in corrected noise.
+        tier            (N,) str  — data quality tier per tag:
+                            'A' n_cr  0– 9  conv_thr=1e-8  FM
+                            'B' n_cr 10–13  conv_thr=1e-7  FM
+                            'C' n_cr 14–16  conv_thr=1e-5  AFM
         mode            str — 'raw' or 'corrected'
     """
     assert os.path.exists(csv_path), f"CSV not found: {csv_path}"
@@ -126,13 +131,15 @@ def load_data(csv_path: str) -> dict:
         df['noise_C44']      = 1.0
         mode = 'raw_fallback'
 
-    # afm_init / vcr_geometry_flag
+    # ── Flag columns — graceful fallback if absent ────────────────────────────
     if 'afm_init' not in df.columns:
         df['afm_init'] = False
     if 'vcr_geometry_flag' not in df.columns:
         df['vcr_geometry_flag'] = False
     if 'loose_thr' not in df.columns:
         df['loose_thr'] = False
+    if 'cubic_enforcement_residual' not in df.columns:
+        df['cubic_enforcement_residual'] = False
 
     # ── Build arrays ──────────────────────────────────────────────────────────
     X            = df['x_cr'].values.reshape(-1, 1)
@@ -140,46 +147,47 @@ def load_data(csv_path: str) -> dict:
     x_pred_atoms = (X_pred * N_ATOMS).flatten()
     tgt          = {t: df[t].values.astype(float) for t in TARGETS}
 
-    # Per-constant noise — C11 and C12 both come from C11+2C12 and C11-C12
-    # C11 = (C11+2C12 + 2*C11-C12)/3 → propagate both noise sources
-    # C12 = (C11+2C12 -   C11-C12)/3 → same
-    # For ML purposes assign each constant its primary noise column
     noise_gpa = {
         'C11': df['noise_C11_2C12'].values.astype(float),
         'C12': df['noise_C11_C12'].values.astype(float),
         'C44': df['noise_C44'].values.astype(float),
     }
-    alpha = {t: noise_gpa[t]**2 for t in TARGETS}
-
-    # Convenience: mean alpha across targets for single-noise models
+    alpha      = {t: noise_gpa[t]**2 for t in TARGETS}
     alpha_mean = np.mean([alpha[t] for t in TARGETS], axis=0)
 
-    flagged      = df['loose_thr'].values.astype(bool)
-    afm_init     = df['afm_init'].values.astype(bool)
-    vcr_geometry = df['vcr_geometry_flag'].values.astype(bool)
+    flagged        = df['loose_thr'].values.astype(bool)
+    afm_init       = df['afm_init'].values.astype(bool)
+    vcr_geometry   = df['vcr_geometry_flag'].values.astype(bool)
+    cubic_enforced = df['cubic_enforcement_residual'].values.astype(bool)
+    tier = np.where(df['n_cr'] <= 9,  'A',
+           np.where(df['n_cr'] <= 13, 'B', 'C'))
 
     # ── Print summary ─────────────────────────────────────────────────────────
     print(f"\nLoaded {len(df)} tags — mode: {mode.upper()}")
     print(f"{'tag':<14} {'n_cr':>4} "
           f"{'σ C11+2C12':>11} {'σ C11-C12':>10} {'σ C44':>7} "
-          f"{'afm':>5} {'vcr_geo':>8}")
-    print('-' * 60)
+          f"{'afm':>5} {'vcr_geo':>8} {'cub_enf':>8}")
+    print('-' * 68)
     for _, r in df.iterrows():
         print(f"{r['tag']:<14} {int(r['n_cr']):>4} "
               f"{r['noise_C11_2C12']:>11.3f} {r['noise_C11_C12']:>10.3f} "
               f"{r['noise_C44']:>7.3f} "
-              f"{str(r['afm_init']):>5} {str(r['vcr_geometry_flag']):>8}")
+              f"{str(r['afm_init']):>5} "
+              f"{str(r['vcr_geometry_flag']):>8} "
+              f"{str(r['cubic_enforcement_residual']):>8}")
 
     return dict(
         df=df,
         X=X, X_pred=X_pred, x_pred_atoms=x_pred_atoms,
         targets=tgt,
-        alpha=alpha,           # {target: (N,) variance} — per-constant GP noise
-        noise_gpa=noise_gpa,   # {target: (N,) σ}        — per-constant sample weight
-        alpha_mean=alpha_mean, # (N,) mean variance       — convenience
+        alpha=alpha,
+        noise_gpa=noise_gpa,
+        alpha_mean=alpha_mean,
         flagged=flagged,
         afm_init=afm_init,
         vcr_geometry=vcr_geometry,
+        cubic_enforced=cubic_enforced,
+        tier=tier,
         mode=mode,
     )
 
