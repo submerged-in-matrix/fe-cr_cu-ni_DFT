@@ -1,0 +1,41 @@
+*HEADING
+Conical indentation - fe16cr00 (100nm depth)
+*INCLUDE, INPUT=cone_master.inp
+
+** Material properties
+*MATERIAL, NAME=fe16cr00
+*ELASTIC
+200000.0, 0.3
+*DENSITY
+7.85e-9
+
+** Assign material to all element sets
+*SOLID SECTION, ELSET=substrate, MATERIAL=fe16cr00
+
+** Fix bottom nodes (z = -500)
+*NSET, NSET=BOTTOM
+5, 6, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 100
+*BOUNDARY
+BOTTOM, 2, 2, 0.0
+
+** Symmetry axis (r=0)
+*NSET, NSET=AXIS
+1, 6, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41
+*BOUNDARY
+AXIS, 1, 1, 0.0
+
+** Indenter displacement (top surface nodes)
+*NSET, NSET=INDENTER
+1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+*BOUNDARY
+INDENTER, 2, 2, -100.0
+
+** Analysis step
+*STEP, NLGEOM
+*STATIC
+0.01, 1.0, 1e-5, 0.1
+*NODE FILE, NSET=INDENTER
+U, RF
+*EL FILE
+S, E
+*END STEP

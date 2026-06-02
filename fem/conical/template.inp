@@ -1,0 +1,39 @@
+*HEADING
+Conical indentation - COMPOSITION_NAME
+*INCLUDE, INPUT=../../geometry/cone_master.inp
+
+** Material properties
+*MATERIAL, NAME=MATERIAL_NAME
+*ELASTIC
+200000.0, 0.3
+*DENSITY
+7.85e-9
+
+** Assign material
+*SOLID SECTION, ELSET=substrate, MATERIAL=MATERIAL_NAME
+
+** Fix bottom
+*NSET, NSET=BOTTOM
+5, 6
+*BOUNDARY
+BOTTOM, 2, 2, 0.0
+
+** Symmetry axis
+*NSET, NSET=AXIS
+1, 6
+*BOUNDARY
+AXIS, 1, 1, 0.0
+
+** Indenter displacement
+*NSET, NSET=INDENTER
+1, 2
+*BOUNDARY
+INDENTER, 2, 2, -100.0
+
+** Analysis step
+*STEP, NLGEOM
+*STATIC
+0.01, 1.0, 1e-5, 0.1
+*NODE FILE, NSET=INDENTER
+U, RF
+*END STEP
