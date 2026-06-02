@@ -1,0 +1,13 @@
+*HEADING
+test mesh only
+*INCLUDE, INPUT=../../geometry/cone_substrate.inp
+*MATERIAL, NAME=MAT1
+*ELASTIC
+200.0, 0.3
+*SOLID SECTION, ELSET=Surface1, MATERIAL=MAT1
+*STEP
+*STATIC
+0.1, 1.0
+*BOUNDARY
+5, 1, 2, 0.0
+*END STEP
