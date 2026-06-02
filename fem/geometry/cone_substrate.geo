@@ -4,8 +4,8 @@
 // Substrate: cylinder R=500nm, H=500nm
 
 // Mesh size parameters
-lc_tip = 2;    // near contact (nm)
-lc_far = 25;   // far field (nm)
+lc_tip = 10;    // near contact (nm)
+lc_far = 50;   // far field (nm)
 
 // Substrate corner points (r-z plane, z pointing up, surface at z=0)
 Point(1) = {0,   0,  0, lc_tip};  // origin — symmetry axis, surface
