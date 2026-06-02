@@ -1,0 +1,35 @@
+** Fe-Cr Material Cards — Best ML Surrogate
+** Primary: MLP (C11/C12: raw ablated | C44: raw full)
+** Uncertainty: GP posterior std (same variant)
+** Units: GPa (multiply by 1000 for MPa in ABAQUS/CalculiX)
+** Cubic Voigt order: C11 C12 C11 C12 C12 C11 C44 C44 C44
+
+** Fe16Cr0  B=209.76 GPa  ZenerA=1.6340  C11±1.00  C12±1.00  C44±0.83
+*Material, name=Fe16Cr0
+*Elastic, type=ANISOTROPIC
+307.430, 160.930, 307.430, 160.930, 160.930, 307.430, 119.690, 119.690,
+119.690
+
+** Fe12Cr4  B=141.31 GPa  ZenerA=2.2535  C11±1.04  C12±1.02  C44±0.57
+*Material, name=Fe12Cr4
+*Elastic, type=ANISOTROPIC
+205.220, 109.360, 205.220, 109.360, 109.360, 205.220, 108.010, 108.010,
+108.010
+
+** Fe8Cr8  B=209.81 GPa  ZenerA=1.8109  C11±1.16  C12±1.10  C44±0.57
+*Material, name=Fe8Cr8
+*Elastic, type=ANISOTROPIC
+300.500, 164.470, 300.500, 164.470, 164.470, 300.500, 123.170, 123.170,
+123.170
+
+** Fe4Cr12  B=248.68 GPa  ZenerA=1.0412  C11±1.04  C12±1.02  C44±0.57
+*Material, name=Fe4Cr12
+*Elastic, type=ANISOTROPIC
+396.510, 174.770, 396.510, 174.770, 174.770, 396.510, 115.440, 115.440,
+115.440
+
+** Fe0Cr16  B=190.14 GPa  ZenerA=0.5384  C11±1.00  C12±1.00  C44±0.83
+*Material, name=Fe0Cr16
+*Elastic, type=ANISOTROPIC
+438.290, 66.060, 438.290, 66.060, 66.060, 438.290, 100.200, 100.200,
+100.200
