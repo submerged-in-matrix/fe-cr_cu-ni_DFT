@@ -1,0 +1,117 @@
+wsize 1400 900
+
+# ============================================================
+# CGX post-processing: Fe16Cr0 v16
+# Run: cgx -b /home/sayeed/dft_projects/fe-cr_cu-ni_DFT/fem/conical/fe16cr00/view_fe16cr00_v16_full.fbl
+#
+# Verified from frd file (grep on -4/-5 records, June 09 2026):
+#   4 datasets per increment: DISP, STRESS, TOSTRAIN, ERROR(CGX-internal)
+#   1221 DISP blocks confirmed (grep -c)
+#   Peak load: increment 1110, time=1.0, U2=-1.010 um
+#
+#   Dataset indices at peak:
+#     DISP     ds 4437  entities: D1=1(radial), D2=2(axial)
+#     STRESS   ds 4438  entities: SXX=1 SYY=2 SZZ=3 SXY=4 SYZ=5 SZX=6 Mises=7
+#     TOSTRAIN ds 4439  entities: EXX=1 EYY=2
+#
+#   Animation DISP sequence (spacing=4): ds 1 5 4437 eh 2
+#   Units: um / uN / MPa
+# ============================================================
+
+read /home/sayeed/dft_projects/fe-cr_cu-ni_DFT/fem/conical/fe16cr00/indentation_fe16cr00_v16.frd new
+
+# ------------------------------------------------------------
+# 1. Mesh integrity — undeformed, no results
+# ------------------------------------------------------------
+view fill
+view elem
+view bg k
+rot -z
+frame
+plot ea all w
+hcpy png fe16cr00_v16_01_mesh
+
+# ------------------------------------------------------------
+# 2. U2 (axial displacement) at peak load — real scale
+# Colour range locked to full indentation depth
+# ------------------------------------------------------------
+ds 4437 e 2
+min -1.010 l
+max 0 l
+view fill
+view disp
+scal d 1
+rot -z
+frame
+plot fv all
+hcpy png fe16cr00_v16_02_U2_peak
+
+# ------------------------------------------------------------
+# 3. SYY (axial stress S22) at peak load
+# Unlocked — auto-ranges to actual stress values
+# Expected: saturation ceiling ~770-793 MPa compressive under tip
+# ------------------------------------------------------------
+ds 4438 e 2
+min u
+max u
+view fill
+view disp
+scal d 1
+rot -z
+frame
+plot fv all
+hcpy png fe16cr00_v16_03_SYY_peak
+
+# ------------------------------------------------------------
+# 4. von Mises stress at peak
+# entity 7 = Mises, auto-calculated by CGX from all 6 tensor components
+# ------------------------------------------------------------
+ds 4438 e 7
+min u
+max u
+view fill
+view disp
+scal d 1
+rot -z
+frame
+plot fv all
+hcpy png fe16cr00_v16_04_Mises_peak
+
+# ------------------------------------------------------------
+# 5. EYY (axial total strain) at peak
+# ------------------------------------------------------------
+ds 4439 e 2
+min u
+max u
+view fill
+view disp
+scal d 1
+rot -z
+frame
+plot fv all
+hcpy png fe16cr00_v16_05_EYY_peak
+
+# ------------------------------------------------------------
+# 6. Interactive loading sequence — U2, full indentation
+# Colour scale locked to full indentation range: 0 to -1.010 um
+# ds 1 5 4437 eh 2: selects all DISP datasets, spacing=4, entity D2
+# plot fv all: renders first frame (t=0, U2=0)
+# stop: hands full interactive control to you
+#
+# Controls once stopped:
+#   PAGE_DOWN = next loadcase (step forward through indentation)
+#   PAGE_UP   = previous loadcase (step back)
+#   Mouse pointer must be inside the CGX window
+#
+# Type 'cont' in the CGX prompt when done
+# ------------------------------------------------------------
+ds 1 5 4437 eh 2
+min -1.010 l
+max 0 l
+view fill
+view disp
+scal d 1
+rot -z
+frame
+plot fv all
+stop
