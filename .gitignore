@@ -13,10 +13,13 @@ crash
 # ── Generated input files (reproducible from scripts) ────────────────────────
 inputs/
 
-# ── Pseudopotentials (third-party, not ours) ─────────────────────────────────
+# ── Pseudopotentials (third-party) ─────────────────────────────────
 pseudo/
 
-
+# ── FEM Output & log files (too big) ───────────────────────────────
+*.frd
+*.cvg
+*.log
 # ── Python artifacts ──────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
