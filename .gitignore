@@ -20,6 +20,10 @@ pseudo/
 *.frd
 *.cvg
 *.log
+*.sta
+*.rin
+*.rout
+*.12d
 # ── Python artifacts ──────────────────────────────────────────────────────────
 __pycache__/
 *.pyc

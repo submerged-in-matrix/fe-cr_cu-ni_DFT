@@ -1,0 +1,13 @@
+Quantity,Value
+h_max (um),0.4040
+"P_max (uN, 360deg)","42,659.6"
+h_f (um),0.1680
+exponent m,1.5131
+fit R2,0.99996
+S (uN/um),"274,013"
+h_c (um),0.2919
+A_c (um^2),2.0881
+Er measured (GPa),168.1
+Er corrected (GPa),196.9
+Er analytical (GPa),224.9
+deviation (%),-12.4
