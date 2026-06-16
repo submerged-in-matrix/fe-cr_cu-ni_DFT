@@ -238,7 +238,7 @@ Key CCX parameters to preserve across any restarts:
 
 ## Implementation Notes
 
-- **`JOB DONE` is not a convergence gate.** QE prints it even after `convergence NOT achieved`. Always check for stress tensor presence.
+- **`JOB DONE` is not a convergence gate.** QE prints it even after `convergence NOT achieved`. Always check stress tensor presence.
 - **C11−C12 denominator is 3ε**, not 4ε, for the volume-conserving tetragonal strain as derived in `run_elastic_grid.sh`.
 - **Wedge scaling:** CAX6 elements in CCX produce forces for a 2° sector. Multiply by 180 to recover the full 360° physical force before any modulus calculation.
 - **kscalemax=1 is mandatory.** The default CCX behaviour reduces the penalty stiffness K by `kscalemax` when the face-to-face contact iteration limit is hit. With kscalemax > 1 this degradation is silent and carries into subsequent restarts undetected.
