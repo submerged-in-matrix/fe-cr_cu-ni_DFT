@@ -24,6 +24,10 @@ pseudo/
 *.rin
 *.rout
 *.12d
+*.vtu
+*.vtkhdf
+*.fbl
+*.pvd
 # ── Python artifacts ──────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
