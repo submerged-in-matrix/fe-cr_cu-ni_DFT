@@ -418,13 +418,9 @@ Each frame is laid out **overview ∣ near-field ∣ close-up** (left to right).
 overview panel tracks the indenter across the full load–unload cycle; the two
 zoomed panels reveal the contact-zone field at progressively finer scale.
 
-> `.ogv` (Ogg Theora) plays in most desktop video players but is **not**
-> preview-embedded by GitHub. For an inline preview, convert the reference animation
-> to GIF:
-> ```bash
-> ffmpeg -i fe16cr00_Mises.ogv -vf "fps=10,scale=960:-1" fe16cr00_Mises.gif
-> ```
-> **Fe16Cr0 von Mises** is the recommended hero animation: a clean, monotonically
+![Fe16Cr00 Mises stress as indenter moves](fem/post/paraview_figures/v3/fe16cr00/fe16cr00_Mises.gif)
+
+> **Fe16Cr0 von Mises**  showing a clean, monotonically
 > decaying hemispherical stress bulb, and the validated reference case.
 
 ---
