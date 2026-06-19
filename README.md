@@ -11,6 +11,30 @@ scripts contain commented-out Cu-Ni blocks preserved for future use.
 
 ---
 
+## Nanoindentation field animations — von Mises stress at peak load
+
+Three-panel composite: **overview ∣ near-field ∣ close-up**. Each animation spans
+the full load–unload cycle. Full `.ogv` animations for all four fields (U2, Mises,
+SYY, EYY) are in `fem/post/paraview_figures/v3/<composition>/`.
+
+| Fe16Cr0 (0 % Cr) | Fe8Cr8 (50 % Cr) |
+|:---:|:---:|
+| ![Fe16Cr0 von Mises](fem/post/paraview_figures/v3/fe16cr00/fe16cr00_Mises.gif) | ![Fe8Cr8 von Mises](fem/post/paraview_figures/v3/fe08cr08/fe08cr08_Mises.gif) |
+| *E*ᵣ = **196.9 GPa** (−12.4 % vs VRH 224.9) | *E*ᵣ = **220.5 GPa** (−1.1 % vs VRH 223.0) |
+
+| Fe4Cr12 (75 % Cr) | Fe0Cr16 (100 % Cr) |
+|:---:|:---:|
+| ![Fe4Cr12 von Mises](fem/post/paraview_figures/v3/fe04cr12/fe04cr12_Mises.gif) | ![Fe0Cr16 von Mises](fem/post/paraview_figures/v3/fe00cr16/fe00cr16_Mises.gif) |
+| *E*ᵣ = **247.7 GPa** (−3.7 % vs VRH 257.3) | *E*ᵣ = **274.0 GPa** (+6.8 % vs VRH 256.6) ⚠️ AFM |
+
+> ⚠️ Fe0Cr16 elastic constants were computed under AFM initialisation (correct
+> physics for near-pure Cr) at the relaxed convergence threshold 1×10⁻⁵. The
+> anomalously low C12 (66 GPa) produces the distinct broad-field stress pattern
+> visible in the animation and a low Poisson ratio (ν ≈ 0.22). Its *E*ᵣ carries
+> higher uncertainty than the other three compositions.
+
+---
+
 ## Table of contents
 
 1. [Pipeline overview](#pipeline-overview)
@@ -418,9 +442,13 @@ Each frame is laid out **overview ∣ near-field ∣ close-up** (left to right).
 overview panel tracks the indenter across the full load–unload cycle; the two
 zoomed panels reveal the contact-zone field at progressively finer scale.
 
-![Fe16Cr00 Mises stress as indenter moves](fem/post/paraview_figures/v3/fe16cr00/fe16cr00_Mises.gif)
-
-> **Fe16Cr0 von Mises**  showing a clean, monotonically
+> `.ogv` (Ogg Theora) plays in most desktop video players but is **not**
+> preview-embedded by GitHub. For an inline preview, convert the reference animation
+> to GIF:
+> ```bash
+> ffmpeg -i fe16cr00_Mises.ogv -vf "fps=10,scale=960:-1" fe16cr00_Mises.gif
+> ```
+> **Fe16Cr0 von Mises** is the recommended hero animation: a clean, monotonically
 > decaying hemispherical stress bulb, and the validated reference case.
 
 ---
@@ -524,5 +552,6 @@ Key CCX parameters to preserve across restarts:
 
 *This README documents methods and project decisions. Named methods (Oliver-Pharr,
 Hill/Voigt-Reuss-Hill averaging, penalty contact) should be cross-referenced against
-the primary literature and documentations of the Tools (Quantum ESPRESSO, Calculix, ParaView); Quantitative results are reproduced from the committed `.dat`, `.vtkhdf`, and
+the primary literature; no specific editions, page numbers, or DOIs are asserted
+here. Quantitative results are reproduced from the committed `.dat`, `.vtkhdf`, and
 summary-CSV artefacts and should be regenerated from source to verify.*
