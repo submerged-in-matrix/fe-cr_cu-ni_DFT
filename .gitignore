@@ -28,7 +28,6 @@ pseudo/
 *.vtkhdf
 *.fbl
 *.pvd
-*.ogv
 
 # Ignore the entire paraview_figures_v2 folder
 fem/post/paraview_figures_v2/
