@@ -1,0 +1,8 @@
+# Override Jupyter Notebook language statistics
+*.ipynb linguist-vendored
+
+# Explicitly count other file types
+*.py linguist-language=Python
+*.sh linguist-language=Shell
+*.inp linguist-language=CalculiX
+*.out linguist-language=Quantum ESPRESSO
