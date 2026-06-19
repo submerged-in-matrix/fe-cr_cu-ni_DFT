@@ -28,6 +28,9 @@ pseudo/
 *.vtkhdf
 *.fbl
 *.pvd
+*.png
+*.ogv
+
 # ── Python artifacts ──────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
