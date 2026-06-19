@@ -524,6 +524,5 @@ Key CCX parameters to preserve across restarts:
 
 *This README documents methods and project decisions. Named methods (Oliver-Pharr,
 Hill/Voigt-Reuss-Hill averaging, penalty contact) should be cross-referenced against
-the primary literature; no specific editions, page numbers, or DOIs are asserted
-here. Quantitative results are reproduced from the committed `.dat`, `.vtkhdf`, and
+the primary literature and documentations of the Tools (Quantum ESPRESSO, Calculix, ParaView); Quantitative results are reproduced from the committed `.dat`, `.vtkhdf`, and
 summary-CSV artefacts and should be regenerated from source to verify.*
