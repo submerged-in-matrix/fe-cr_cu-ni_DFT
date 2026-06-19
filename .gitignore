@@ -28,8 +28,14 @@ pseudo/
 *.vtkhdf
 *.fbl
 *.pvd
-*.png
 *.ogv
+
+# Ignore the entire paraview_figures_v2 folder
+fem/post/paraview_figures_v2/
+
+# Ignore all subfolders in paraview_figures except v3
+fem/post/paraview_figures/*
+!fem/post/paraview_figures/v3/
 
 # ── Python artifacts ──────────────────────────────────────────────────────────
 __pycache__/
