@@ -119,9 +119,9 @@ converts raw solver output into the validated artefact the next stage depends on
 | Item | Details |
 |---|---|
 | DFT code | Quantum ESPRESSO 7.3.1 (`pw.x`), GPU-accelerated |
-| DFT compute | Vast.ai RTX 4090 (NVHPC 24.7, CUDA 12.5, cc=89) |
+| DFT compute | Vast.ai RTX 4090 (NVHPC 24.7, CUDA 12.5, cc=89) - Total cost: 69.5$|
 | FEM code | CalculiX CCX 2.21 |
-| FEM compute | CloudHPC (browser-based), local WSL for restarts |
+| FEM compute | CloudHPC (browser-based, free Trial), local WSL for restarts |
 | Visualisation | ParaView 6.1.1 (Kitware tarball, MPI build, Python 3.12) |
 | Local machine | Ubuntu WSL2 (Azog), Python 3.12 |
 
